@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}utilisateur{% endblock %}
+
+{% block body %}
+    
+	<h2 class="title fw-bold mb-2 mt-5">Collectibles filtrer par la recherche : 
+		<span class="fst-italic fw-normal"> {{ keyword is defined ? keyword : '' }}</span>
+	</h2>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mt-4 d-flex">
+		{% for user in users %}
+			<div class="col">
+				<div class="hovering w-auto">
+					<img class="img-fluid pic w-auto" 
+						{% if (user.picture is not empty) %}
+							{# If the User has a picture, set the image source to upload/usersPics/user.picture #}
+							src="{{asset('upload/usersPics/' ~ user.picture)}}" >
+						{% else %}
+							{# If the User has no picture, set the image source to asset/images/picto.png #}
+							src="{{asset('asset/images/picto.png')}}" height="40"></td>
+						{% endif %}
+						<a href="{{ path('app_user_show', {'id': user.id}) }}">
+							<button type="button" class="profilebtn ">
+								Voir l'utilisateur
+							</button>
+						</a>
+				</div>
+
+				<div class="d-flex mt-2  justify-content-center">					
+					<a class="link-dark" href="{{ path('app_user_show', {'id': user.id}) }}">
+						<h5 class="card-title fw-bold mt-2 text-decoration-underline text-center">
+							{{ user.username}}
+						</h5>
+					</a>
+				</div>				
+			</div>
+		{% endfor %}
+
+	</div>
+
+{% endblock %}

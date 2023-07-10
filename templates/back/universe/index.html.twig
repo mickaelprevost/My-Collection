@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des univers{% endblock %}
+
+{% block body %}
+
+{% include 'back/_navBack.html.twig' %}
+
+    <h1 class="mt-3 mb-1">Liste des univers</h1>
+
+    <a class="btn btn-primary mt-3 mb-3" href="{{ path('app_back_universe_new') }}">Ajouter un univers</a>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for universe in universes %}
+            <tr>
+                <td>{{ universe.id }}</td>
+                <td>{{ universe.name }}</td>
+                <td>
+                    <a href="{{ path('app_back_universe_show', {'id': universe.id}) }}">Voir</a>
+                    <a href="{{ path('app_back_universe_edit', {'id': universe.id}) }}">Modifier</a>
+                    <form method="post" action="{{ path('app_back_universe_delete', {'id': universe.id}) }}" onsubmit="return confirm('Êtes-vous sûr de supprimer cet univers ?');">
+                    <button class="btn btn-danger">Supprimer</button>
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ universe.id) }}">
+                    </form>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">Pas de résultats</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

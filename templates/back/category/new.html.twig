@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle catégorie{% endblock %}
+
+{% block body %}
+
+<div class="container pt-5">
+
+        <div class="row mb-2">
+
+            <div class="col">
+
+                <h1>Création d'une nouvelle catégorie</h1>
+
+                <a class= "btn btn-secondary mt-3 mb-4" href="{{ path('app_back_category_index') }}">Retour vers la liste</a>
+
+                {{ include('back/category/_form.html.twig') }}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

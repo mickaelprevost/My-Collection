@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Nouvel utilisateur
+{% endblock %}
+
+{% block body %}
+
+<div class="container pt-5">
+
+    <div class="row mb-2">
+
+        <div class="col">
+
+            <h1>Création d'un nouvel utilisateur</h1>
+
+            <a class= "btn btn-secondary mt-3 mb-4" href="{{ path('app_home') }}">
+                Retour vers Accueil
+            </a>
+
+            {{ include('front/user/_form.html.twig') }}
+
+        </div>
+
+    </div> 
+
+</div>
+
+{% endblock %}

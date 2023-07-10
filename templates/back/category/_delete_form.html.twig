@@ -1,0 +1,8 @@
+<form 
+    method="post" action="{{ path('app_back_category_delete', {'id': category.id}) }}" onsubmit="return confirm('Êtes-vous sûr de supprimer cette catégorie ?');">
+    {# Adds a CSRF token for security purposes when submitting the form #}
+    <input 
+    type="hidden" name="_token" value="{{ csrf_token('delete' ~ category.id) }}">
+	{# Displays a delete button to delete the user #}
+    <button class="btn btn-danger">Supprimer</button>
+</form>

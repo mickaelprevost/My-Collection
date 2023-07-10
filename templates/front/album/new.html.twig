@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle Collection{% endblock %}
+
+{% block body %}
+
+    <h1>Créer ta collection</h1>
+
+    <a class= "btn btn-secondary mt-3 mb-4" href="{{ path('app_album_index') }}">
+        Retour vers les collections
+    </a>
+
+    {{ include('front/album/_form.html.twig') }}
+
+    
+{% endblock %}

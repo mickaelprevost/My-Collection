@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ album.title }}
+{% endblock %}
+
+{% block body %}
+
+<div class="container pt-3">
+    <div class="row mb-2">
+        <div class="col">
+
+            <h1>{{ album.title }}</h1>
+            <h2 class="mt-4 mb-4">Ajouter une commentaire</h2>
+
+            {# we desactivate the HTML5 validation #}
+            {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+            {{form_widget(form)}}
+            <button type="submit" class="btn btn-success">
+                Valider
+            </button>
+   
+            {{form_end(form)}}
+
+            <br>
+
+            <a class="btn btn-info" href="{{ path('app_album_index')}}">
+                retour aux collections
+            </a>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

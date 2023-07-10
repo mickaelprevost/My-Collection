@@ -1,0 +1,76 @@
+<div class="searchBarDrop">
+		<div class="dropdown">
+			<a class="dropdown-toggle nav-link link-light" data-toggle="dropdown" aria-current="page">
+				Rechercher par ...
+			</a>
+			<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+				<a class="dropdown-item dropdown-color" href="#" onclick="toggleSearchBar('searchBar1', 'button1')">
+					Collection
+				</a>
+				<a class="dropdown-item dropdown-color" href="#" onclick="toggleSearchBar('searchBar2', 'button2')">
+					Collectible
+				</a>
+				<a class="dropdown-item dropdown-color" href="#" onclick="toggleSearchBar('searchBar3', 'button3')">
+					Utilisateur
+				</a>
+			</div>
+		</div>
+
+		<div id="searchBar1" class="search-bar" style="display: none;">
+			<form action="{{ path('app_album_list') }}" class="d-flex">
+				<input class="form-control form-control-sm me-2" name="search" type="search" value="{{ keyword is defined ? keyword : '' }}" placeholder="Rechercher un collection">
+				<button type="submit" class="bi bi-search"></button>
+			</form>
+		</div>
+
+		<div id="searchBar2" class="search-bar" style="display: none;">
+			<form action="{{ path('app_collectible_list') }}" class="d-flex">
+				<input class="form-control form-control-sm me-2" name="search" type="search" value="{{ keyword is defined ? keyword : '' }}" placeholder="Rechercher un collectible">
+				<button type="submit" class="bi bi-search"></button>
+			</form>
+		</div>
+
+		<div id="searchBar3" class="search-bar" style="display: none;">
+			<form action="{{ path('app_user_list') }}" class="d-flex">
+				<input class="form-control form-control-sm me-2" name="search" type="search" value="{{ keyword is defined ? keyword : '' }}" placeholder="Rechercher un utilisateur">
+				<button type="submit" class="bi bi-search"></button>
+			</form>
+		</div>
+	</div>
+
+
+	<div class="d-flex">
+		<div class="dropdown">
+			<a class="nav-link link-light" data-toggle="dropdown" aria-current="page" href="{{path("app_album_index")}}">
+				Collections
+			</a>
+			<ul class="dropdown-menu">
+			
+				{# this loop list all the universes #}
+				{% for universe in universes %}
+					<li>
+						<a class="dropdown-item dropdown-color" href="{{ path('app_albums_by_universe', {id: universe.id})}}">
+							{{universe.name}}
+						</a>
+					</li>
+				{% endfor %}
+			</ul>
+		</div>
+
+		<div class="dropdown">
+			<a class="nav-link link-light" aria-current="page" href="{{ path('app_collectible_index') }}">
+				Collectibles
+			</a>
+			<ul class="dropdown-menu">
+
+				{# this loop list all the categories #}
+				{% for category in categories %}
+					<li>
+						<a class="dropdown-item dropdown-color" href="{{ path('app_collectibles_by_category', {id: category.id})}}">
+							{{category.name}}
+						</a>
+					</li>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>

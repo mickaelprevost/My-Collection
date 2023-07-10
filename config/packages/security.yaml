@@ -1,0 +1,151 @@
+security:
+    enable_authenticator_manager: true
+    # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
+    password_hashers:
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+        App\Entity\User: 'auto'
+    # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
+    providers:
+        
+        app_user_provider:
+            entity:
+                class: App\Entity\User
+                property: email
+        # used to reload user from session & other features (e.g. switch_user)
+
+    encoders:
+        App\Entity\User:
+            algorithm: bcrypt
+            
+                
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main:
+            lazy: true
+            provider: app_user_provider
+            custom_authenticator: App\Security\LoginFormAuthenticator
+            logout:
+                path: logout
+                # where to redirect after logout
+                # target: app_any_route
+
+            # activate different ways to authenticate
+            # https://symfony.com/doc/current/security.html#the-firewall
+
+            # https://symfony.com/doc/current/security/impersonating_user.html
+            # switch_user: true
+
+    # Easy way to control access for large sections of your site
+    # Note: Only the *first* access control that matches will be used
+    access_control:
+        # - { path: ^/admin, roles: ROLE_ADMIN }
+        # - { path: ^/profile, roles: ROLE_USER }
+
+# Back-office : Si ROLE_ADMIN : accès aux pages du back/home, add, edit, delete.
+# Back-office : Si ROLE_MODERATEUR : Pas d'accès
+# Back-office : Si ROLE_USER : Pas d'accès
+# Back-office : Si ROLE_ANONYME : Pas d'accès
+
+# Front-office : Si ROLE_ADMIN : accès aux pages du back/home, add, edit, delete.
+# Front-office : Si ROLE_MODERATEUR : accès aux pages du USER et edit, delete de tous les users.
+# Front-office : Si ROLE_USER : accès aux pages add, edit et delete de ses albums et collectibles.
+# Front-office : Si ROLE_ANONYME : accès à la visualisation des la home, des albums, collectibles et profils publics des users.
+
+             
+# ANONYME => on laisse ces routes accessibles
+#   home                            /                       
+#   app_signup                      /signup                   
+#   login                           /login
+#   app_univers_index               /universe
+#   app_category_index              /category
+#   app_album_index                 /album 
+#   app_album_show                  /album/{id}
+#   app_album_list                  /albums/list
+#   app_Albums_listByUniverse       /album/{id<\d+>}
+#   app_collectible_index           /collectibles
+#   app_collectible_show            /collectible/{id}
+#   app_collectible_list            /collectibles/list
+#   app_Collectibles_listByCategory /list/{id<\d+>}
+#   app_user_index                  /user/{id}
+#   app_user_list                   /users/list
+#   app_cgu_index                   /cgu
+
+# USER => accès aux routes de l'ANONYME + les routes suivantes :
+#   logout                          /logout
+#   app_album_new                   /album/new
+#   app_album_edit                  /album/{id}/edit
+#   app_album_delete                /album/{id}
+#   app_collectible_new             /collectible/new
+#   app_collectible_edit            /collectible/edit/{id}
+#   app_collectible_delete          /{id<\d+>}
+#   app_user_edit                   /user/{id}/edit
+#   app_user_delete                 /user/{id}
+#   messagerie_index                /messagerie
+#   send                            /send
+#   received                        /received
+#   sent                            /sent
+#   read                            /read{id<\d+>}
+#   message_delete                  /message/delete{id<\d+>}
+
+# MODERATEUR => accès aux routes des ANONYMES + USER + des fonctionnalités supplémentaires (boutons)
+
+# ADMIN => accès à toutes les routes.
+
+
+## Pour le BACK
+# le back est accessible à l'ADMIN uniquement
+        - { path: ^/back, roles: ROLE_ADMIN }
+
+## Pour le FRONT
+# le Front est accessible à l 
+        - { path: ^/logout, roles: ROLE_USER }
+        - { path: ^/album/new, roles: ROLE_USER }
+        - { path: ^/album/edit/\d+, roles: ROLE_USER }
+        - { path: ^/album/remove/\d+, roles: ROLE_USER }
+        - { path: ^/album/like/\d+, roles: ROLE_USER }
+        - { path: ^/collectible/new/\d+, roles: ROLE_USER }
+        - { path: ^/collectible/edit/\d+, roles: ROLE_USER }
+        - { path: ^/collectible/remove/\d+, roles: ROLE_USER }
+        - { path: ^/review/edit/\d+, roles: ROLE_USER }
+        - { path: ^/review/remove/\d+, roles: ROLE_USER }
+        - { path: ^/review/new/\d+, roles: ROLE_USER }
+        - { path: ^/review/like/\d+, roles: ROLE_USER }
+        - { path: ^/favoris/list, roles: ROLE_USER }
+        - { path: ^/favoris/new/\d+, roles: ROLE_USER }
+        - { path: ^/favoris/remove, roles: ROLE_USER }
+        - { path: ^/favoris/remove/\d+, roles: ROLE_USER }
+        - { path: ^/user/edit/\d+, roles: ROLE_USER }
+        - { path: ^/user/\d+, roles: ROLE_USER }
+        - { path: ^/messagerie, roles: ROLE_USER }
+        - { path: ^/message/send, roles: ROLE_USER }
+        - { path: ^/message/received, roles: ROLE_USER }
+        - { path: ^/message/sent, roles: ROLE_USER }
+        - { path: ^/message/read/\d+, roles: ROLE_USER }
+        - { path: ^/message/delete/\d+, roles: ROLE_USER }
+
+
+
+
+ # hiérarchie des rôles (sous 'security:')
+    role_hierarchy:
+        # admin hérite des permissions du modérateur
+        ROLE_ADMIN: ROLE_MODERATEUR
+        # le modérateur hérite des permissions de l'utilisateur
+        # ... en en cascade, l'admin hérite aussi de l'utilisateur
+        ROLE_MODERATEUR: ROLE_USER
+        
+
+when@test:
+    security:
+        password_hashers:
+            # By default, password hashers are resource intensive and take time. This is
+            # important to generate secure password hashes. In tests however, secure hashes
+            # are not important, waste resources and increase test times. The following
+            # reduces the work factor to the lowest possible values.
+            Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
+                algorithm: auto
+                cost: 4 # Lowest possible value for bcrypt
+                time_cost: 3 # Lowest possible value for argon
+                memory_cost: 10 # Lowest possible value for argon

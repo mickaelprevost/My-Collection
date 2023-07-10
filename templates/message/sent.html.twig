@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Messagerie
+{% endblock %}
+
+{% block body %}
+	<section class="container mt-5 mb-5">
+		<div class="row">
+			<div class="col-12">
+				<h1>Messagerie</h1>
+				<h2 class="mt-4 mb-4">
+					Elements envoyés
+				</h2>
+				<p>
+					Vous avez envoyé
+					{{ messageSent|length}}
+					messages
+				</p>
+			</div>
+			<div class="col-3">
+				destinataires
+			</div>
+			<div class="col-3">
+				sujet
+			</div>
+			<div class="col-3">
+				date
+			</div>
+			<div class="col-3">
+				Supprimer
+			</div>
+			{% for message in app.user.sent %}
+				{% if message.isActive == 1 %}
+					{% if message.isRead == 0 %}
+						{% set bold = "fw-bold" %}
+					{% else %}
+						{% set bold = "" %}
+					{% endif %}
+					<div class="col-3 {{bold}}">{{message.recipient.email}}</div>
+					<div class="col-3 {{bold}}">
+						<a href="{{path("app_message_read", {id: message.id}) }}">{{ message.title}}</a>
+					</div>
+					<div class="col-3 {{bold}}">{{message.createdAt|date}}</div>
+					<div class="col-3 ">
+						<form action="{{path("app_message_delete", {id: message.id})}}" method="POST" class="d-flex">
+						<button type="submit" class="btn btn-secondary">X</button>
+						<input type="hidden" name="token" value="{{ csrf_token('delete-message') }}">
+						</form>
+					</div>
+				{% endif %}
+			{% endfor %}
+		</div>
+		<a class="btn btn-primary" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
+			Voir mes dossiers
+		</a>
+		<a class="btn btn-primary" href="{{ path('app_message_received')}}">
+			Retour à la liste des messages
+		</a>
+	</section>
+{% endblock %}

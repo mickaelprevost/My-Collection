@@ -1,0 +1,8 @@
+<form 
+    method="post" action="{{ path('app_back_album_delete', {'id': album.id}) }}" onsubmit="return confirm('Êtes-vous sûr de supprimer cette collection ?');">
+	{# Adds a CSRF token for security purposes when submitting the form #}
+    <input 
+    type="hidden" name="_token" value="{{ csrf_token('delete' ~ album.id) }}">
+	{# Displays a delete button to delete the user #}
+    <button class="btn btn-danger">Supprimer</button>
+</form>

@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Mes favoris
+{% endblock %}
+
+{% block body %}
+
+	<div class="container-xl bg-light p-5 border-top">
+		<div class="row mb-2">
+			<h2 class="text-muted fw-bold mb-4">
+				Ma liste
+			</h2>
+			<div class="d-flex align-items-center justify-content-between">
+				<div class="mb-2">
+					<form action="{{ path('app_favoris_remove_all')}}" method="POST">
+						<button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Vider votre liste de favoris ?');">Vider la liste</button>
+						<input type="hidden" name="token" value="{{ csrf_token('delete_Allfavoris') }}">
+					</form>
+				</div>
+
+				<div class="d-flex mb-2">
+					<a href="{{path("app_user_index", {'id': app.user.id}) }}" class="btn btn-danger btn-sm">
+						Retour profil
+					</a>
+				</div>
+			</div>
+			<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mt-4 d-flex">
+				{% for collectible in favorisList %}
+					<div class="col">
+						<div class="hovering w-auto">
+							<img class="img-fluid pic w-auto" src="{{asset('upload/pictures/' ~ collectible.picture )}}" alt="alternative">
+							<a href="{{ path('app_collectible_show', {'id': collectible.id}) }}">
+								<button type="button" class="profilebtn ">
+									Voir le collectible
+								</button>
+							</a>
+						</div>
+						<div class="d-flex height-pic-infos mt-2 justify-content-center">
+							<h5 class="card-title fw-bold mt-2 text-decoration-underline text-center">{{ collectible.name}}</h5>
+							<form action="{{ path('app_favoris_remove', { id : collectible.id})}}" class="d-flex link-danger align-self-center mx-2 position" method="POST">
+								<button type="submit">
+									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-bookmark-x-fill" viewbox="0 0 16 16">
+										<path fill-rule="evenodd" d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5zM6.854 5.146a.5.5 0 1 0-.708.708L7.293 7 6.146 8.146a.5.5 0 1 0 .708.708L8 7.707l1.146 1.147a.5.5 0 1 0 .708-.708L8.707 7l1.147-1.146a.5.5 0 0 0-.708-.708L8 6.293 6.854 5.146z"/>
+									</svg>
+								</button>
+								<input type="hidden" name="token" value="{{ csrf_token('delete_favoris') }}">
+							</form>
+
+
+						</div>
+						<div class="">
+							<p class="fw-medium mt-2 fs-6 d-flex justify-content-center text-center">
+								{{ collectible.description}}
+							</p>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+
+{% endblock %}

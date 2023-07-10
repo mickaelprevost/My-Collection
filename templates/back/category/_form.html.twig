@@ -1,0 +1,8 @@
+{# Starts the form rendering, with an additional attribute to disable HTML5 form validation #}
+{{form_start (form, {'attr': {'novalidate': 'novalidate'}}) }}
+{# Renders the form fields #}
+{{ form_widget(form) }}
+{# Displays a button to submit the form, with a default label of "Add" #}
+<button class="btn btn-primary">{{ button_label|default('Ajouter') }}</button>
+{# Ends the form rendering #}
+{{ form_end(form) }}

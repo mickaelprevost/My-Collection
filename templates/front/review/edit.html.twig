@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Modification du commentaire
+{% endblock %}
+
+{% block body %}
+
+<div class="container pt-5">
+    <div class="row mb-2">
+        <div class="col">
+            <h1>Modification du commentaire</h1>
+            {{ include('front/review/_form.html.twig', {'button_label': 'Modifier'}) }}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

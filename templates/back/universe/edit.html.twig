@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modification de l'univers{% endblock %}
+
+{% block body %}
+
+<div class="container pt-5">
+
+    <div class="row mb-2">
+
+        <div class="col">
+
+            <h1>Modification de l'univers</h1>
+
+            <a class="btn btn-primary mt-3 mb-3" href="{{ path('app_back_universe_index') }}">Retour à la liste des univers</a>
+
+            {{ include('back/universe/_form.html.twig', {'button_label': 'Modifier'}) }}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

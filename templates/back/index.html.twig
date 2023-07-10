@@ -1,0 +1,185 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	back office
+{% endblock %}
+
+{% block body %}
+
+	{% include 'back/_navBack.html.twig' %}
+
+	{# Administration of the universes and categories #}
+	<hr/>
+
+	<h2 class="text-center mt-5 mb-3">Administration des univers et des catégories</h2>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6">
+				<div class="button-add-list text-center mb-3">
+
+					<a href="{{ path('app_back_universe_new')}}" class="btn btn-primary btn-md">Ajouter</a>
+					<a href="{{ path('app_back_universe_index')}}" class="btn btn-primary btn-md">Liste</a>
+				</div>
+				<ul class="list-group custom-list-group align-items-center">
+					{% for universe in universes %}
+						<li class="list-group-item d-flex">
+							<span>{{ universe.name }}</span>
+							{# Display the name of the current universe #}
+							<div class="ml-auto">
+								<a href="{{ path('app_back_universe_edit', {'id': universe.id}) }}" class="btn btn-secondary btn-sm">Modifier</a>
+								<a href="{{ path('app_back_universe_delete', {'id': universe.id}) }}" class="btn btn-danger btn-sm">Supprimer</a>
+							</div>
+						</li>
+					{% endfor %}
+
+				</ul>
+			</div>
+			<div class="col-md-6">
+				<div class="button-add-list text-center mb-3">
+					<a href="{{ path('app_back_category_new')}}" class="btn btn-primary btn-md">Ajouter</a>
+					<a href="{{ path('app_back_category_index') }}" class="btn btn-primary btn-md">Liste</a>
+				</div>
+				<ul class="list-group custom-list-group align-items-center">
+					{% for category in categories %}
+						<li class="list-group-item d-flex">
+							<span>{{ category.name }}</span>
+							{# Display the name of the current category #}
+							<div class="ml-auto">
+								<a href="{{ path('app_back_category_edit', {'id': category.id}) }}" class="btn btn-secondary btn-sm">Modifier</a>
+								<a href="{{ path('app_back_category_delete', {'id': category.id}) }}" class="btn btn-danger btn-sm">Supprimer</a>
+							</div>
+						</li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<hr/>
+
+	{# Section COLLECTIONS (albums) part 1 #}
+
+	<h2 class="title mt-5 mb-3">Collections</h2>
+
+	{# DropDown Button Album sort by #}
+	<div class="dropdown title mb-3">
+		<button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+			Trier par
+		</button>
+		<ul class="dropdown-menu">
+			<li>
+				{# Sort albums in ascending order by title #}
+				<a class="dropdown-item" href="{{ path('app_back_home', {'sort': 'title', 'direction': 'ASC'}) }}#albums-section">Tri de A à Z</a>
+			</li>
+			<li>
+				{# Sort albums in descending order by title #}
+				<a class="dropdown-item" href="{{ path('app_back_home', {'sort': 'title', 'direction': 'DESC'}) }}#albums-section">Tri de Z à A</a>
+			</li>
+			<li>
+				{# Sort albums by most recent ones #}
+				<a class="dropdown-item" href="{{ path('app_back_home', {'sort': 'created_at', 'direction': 'DESC'}) }}#albums-section">Les plus récents</a>
+			</li>
+			<li>
+				{# Sort albums by oldest ones #}
+				<a class="dropdown-item" href="{{ path('app_back_home', {'sort': 'created_at', 'direction': 'ASC'}) }}#albums-section">Les plus anciens</a>
+			</li>
+			<li>
+				{# Sort albums by universe #}
+				<a class="dropdown-item" href="{{ path('app_back_home', {'sort': 'universe', 'direction': 'ASC'}) }}#albums-section">Par univers</a>
+			</li>
+		</ul>
+	</div>
+	{# tag creates an anchor point for linking to the albums section on the page #}
+	<a id="albums-section"></a>
+
+
+	{# Section Collections (albums) part 2 #}
+
+	<div
+		class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+		{# Slice added to limit albums displayed #}
+		{% for album in albums|slice(0, 3) %}
+			<div class="col">
+				<div
+					class="hovering ms-0 w-auto">
+					{# condition to put a default pic if the poster is empty #}
+					<img class="img-fluid pic w-100 min-width-100" {% if (album.poster is not empty) %} src="{{ asset('upload/pictures/' ~ album.poster) }}" height="40" {% else %} src="{{ asset('asset/images/logo.png') }}" height="40" {% endif %}>
+					<a href="{{ path('app_album_show', {'id': album.id}) }}">
+						<button type="button" class="profilebtn">Voir la collection</button>
+					</a>
+				</div>
+				<h5 class="card-title fw-bold mt-2">{{ album.title }}</h5>
+				<p class="card-text fw-medium mt-2 fs-6">{{ album.description }}</p>
+				{# Retrieve the user associated with the album #}
+				{% set user = album.userId %}
+				{# Display a button/link to the user's profile with their username as the label #}
+				<a href="{{ path('app_user_show', {'id': user.id}) }}" class="btn btn-primary">{{ user.username }}</a>
+			</div>
+		{% endfor %}
+	</div>
+
+	<div class="col text-center mt-3">
+		<a class="card-text fw-light mt-2 fs-6 mx-auto" href="{{ path('app_back_album_index') }}">Liste des collections</a>
+	</div>
+
+	{# Section USER #}
+
+	<hr/>
+	<h2 class="title mt-5 mb-3">Utilisateurs</h2>
+
+	{# DropDown Button User sort by #}
+
+	<div class="dropdown title mb-3">
+		<button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+			Trier par
+		</button>
+		<ul class="dropdown-menu">
+			<li>
+				<a class="dropdown-item" href="{{ path('app_back_home', {'sort': 'username', 'direction': 'ASC'}) }}#users-section">Tri de A à Z</a>
+			</li>
+			<li>
+				<a class="dropdown-item" href="{{ path('app_back_home', {'sort': 'username', 'direction': 'DESC'}) }}#users-section">Tri de Z à A</a>
+			</li>
+		</ul>
+	</div>
+
+	<a id="users-section"></a>
+
+	{# Section user #}
+
+	<div class="row row-cols-2 row-cols-md-4 row-cols-lg-5 g-4 mt-3 d-flex justify-content-center">
+		{# slice(0, 5) allows you to display a maximum of six collections #}
+		{% for user in users|slice(0, 5) %}
+			<div class="col">
+				<div class="hovering  w-auto ">
+					{% if (user.picture is not empty) %}
+						{# If the User has a picture, set the image source to upload/pictures/User.picture #}
+						<img class="img-fluid pic w-auto " src="{{asset('upload/usersPics/' ~ user.picture)}}" alt="alternative">
+							<a href="{{ path('app_user_show', {'id': user.id}) }}">
+								<button type="button" class="profilebtn ">
+									Voir le profil
+								</button>
+							</a>
+					{% else %}
+						{# If the User has no picture, set the image source to asset/images/picto.png #}
+						<img class="img-fluid pic w-auto " src="{{ asset('asset/images/picto.png') }}" alt="alternative">
+							<a href="{{ path('app_user_show', {'id': user.id}) }}">
+								<button type="button" class="profilebtn ">
+									Voir le profil
+								</button>
+							</a>
+					{% endif %}
+				</div>
+				<a class="link-dark" href="{{ path('app_user_show', {'id': user.id}) }}">
+					<p class="fw-medium mt-2 fs-6 d-flex  justify-content-center text-center mb-4">
+					{{ user.username }}
+					<p>
+				</a>
+				
+			</div>
+		{% endfor %}		
+	</div>
+
+
+	<hr/>
+{% endblock %}

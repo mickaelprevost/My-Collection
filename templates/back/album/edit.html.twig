@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier une collection{% endblock %}
+
+{% block body %}
+
+<div class="container pt-5">
+
+    <div class="row mb-2">
+
+        <div class="col">
+
+            <h1>Modifier une collection</h1>
+
+            <a class="btn btn-primary mt-3 mb-3" href="{{ path('app_back_album_index') }}">Retour à la liste des collections</a>
+
+            {{ include('back/album/_form.html.twig', {'button_label': 'Modifier'}) }}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Votre objet
+{% endblock %}
+
+{% block body %}
+
+	<h1 class="mt-3 mb-1">Votre objet</h1>
+
+	<a class="btn btn-primary mt-3 mb-3" href="{{ path('app_back_collectible_new') }}">Ajouter un objet</a>
+	<a class="btn btn-primary mt-3 mb-3" href="{{ path('app_back_collectible_index') }}">retour à la liste des objets</a>
+
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Nom</th>
+				<th>Description</th>
+				<th>Date de sortie</th>
+				<th>Photo</th>
+				<th>Utilisateur</th>
+				<th>Catégories associées</th>
+				<th>Collections associées</th>
+
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>{{ collectible.id }}</td>
+				<td>{{ collectible.name }}</td>
+				<td>{{ collectible.description }}</td>
+				<td>{{ collectible.releaseDate ? collectible.releaseDate|date('Y') : '' }}</td>
+                {# condition to add a default collectible pic if the user don't add a personnal one #}
+				{% if (collectible.picture is not empty) %}
+					<td><img src="{{asset('upload/pictures/' ~ collectible.picture)}}" height="40"></td>
+				{% else %}
+					<td><img src="{{ asset('asset/images/logo.png') }}" height="40"></td>
+				{% endif %}
+				<td>{{ collectible.userId.username}}</td>
+				{% for category in collectible.Categories %}
+					<td>{{ category.name }}</td>
+				{% endfor %}
+				{% for album in collectible.albums %}
+					<td>{{ album.title }}</td>
+				{% endfor %}
+			</tr>
+		</tbody>
+	</table>
+
+{% endblock %}

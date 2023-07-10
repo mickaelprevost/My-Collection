@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Messagerie{% endblock %}
+
+{% block body %}
+    <section class="container">
+        <div class="row">
+            <div class="col">
+                <h1> Envoyer un message </h1>
+                {{ form(form)}}
+                <a class="btn btn-primary mt-2" data-bs-toggle="offcanvas" href="#offcanvasExample" 
+                role="button" aria-controls="offcanvasExample">
+                Voir mes dossiers
+                </a>
+            </div>
+        </div>
+    </section>
+{% endblock %}

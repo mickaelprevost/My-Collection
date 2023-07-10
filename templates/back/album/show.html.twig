@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Collection{% endblock %}
+
+{% block body %}
+    <h1 class="mt-3 mb-1">Votre collection</h1>
+
+    <a class="btn btn-primary mt-3 mb-3" href="{{ path('app_back_album_new') }}">Créer une collection</a>
+    <a class="btn btn-primary mt-3 mb-3" href="{{ path('app_back_album_index') }}">retour à la liste des collections</a>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Description</th>
+                <th>Image</th>
+                <th>Date de création</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td>{{ album.id }}</td>
+                <td>{{ album.title }}</td>
+                <td>{{ album.description }}</td>
+                {# condition to add a default user pic if the user don't add a personnal one #}
+                {% if (album.poster is not empty) %}
+					<td><img src="{{asset('upload/usersPics/' ~ album.poster)}}" height="40"></td>
+				{% else %}
+					<td><img src="{{ asset('asset/images/picto.png') }}" height="40"></td>
+				{% endif %}
+                <td>{{ album.createdAt ? album.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a class= "btn btn-secondary mt-3 mb-4" href="{{ path('app_back_album_edit', {'id': album.id}) }}">Modifier</a>
+
+    {{ include('back/album/_delete_form.html.twig') }}
+{% endblock %}

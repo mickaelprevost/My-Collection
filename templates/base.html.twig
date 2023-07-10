@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="fr">
+
+	<head>
+		
+		<!-- Required meta tags -->
+		<meta charset="utf-8">
+		<meta
+		name="viewport" content="width=device-width, initial-scale=1">
+
+
+		<!-- Bootstrap CSS -->
+		<link
+		href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+		<!-- Bootstrap icons -->
+		<link
+		rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+		<!-- Our custom CSS -->
+
+		<link
+		rel="stylesheet" href="{{ asset('asset/css/Mycollection.css') }}">
+
+		<!-- JS -->
+		<script src="https://unpkg.com/axios/dist/axios.min.js"> </script>
+		<script src="{{ asset('asset/js/likes.js') }}" defer></script>
+		<script src="{{ asset('asset/js/script.js') }}" defer></script>
+		<script src="{{ asset('asset/js/app.js') }}" defer></script>
+		<script src="{{ asset('asset/js/counters.js') }}" defer></script>
+		<script src="{{ asset('asset/js/scriptCarousel.trigger.js') }}" defer></script>
+		<script src="{{ asset('asset/js/scriptCarousel.js') }}" defer></script>
+
+
+		<!-- favicon -->
+		<link rel="shortcut icon" href="{{ asset('favicon.png') }}" type="image/x-icon">
+
+		{# <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.min.js" integrity="sha384-Y4oOpwW3duJdCWv5ly8SCFYWqFDsfob/3GkgExXKV4idmbt98QcxXYs9UoXAB7BZ" crossorigin="anonymous"></script> #}
+
+
+		<!-- police pour les chiffres des compteurs -->
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bangers&display=swap"> <title>
+			{% block title %}{% endblock %}My collection</title>
+
+ 
+		
+	</head>
+	<body>
+		<div class="container">
+			{% include '_nav.html.twig' %}
+
+			<!-- Affichage des messages flash -->
+			{% for type, messages in app.flashes %}
+				{% for message in messages %}
+					<div class="alert alert-{{ type }}">
+						{{ message }}
+					</div>
+				{% endfor %}
+			{% endfor %}
+
+			<header
+				class="d-flex flex-column justify-content-center align-items-center">
+
+				<!-- Compteurs -->
+
+				<div class="container">
+					<div class="row justify-content-center">
+						<div class="col-auto home-counters">
+							<div class="counters">
+								<i class="yo"></i>
+								<span class="num" data-val="7500">000</span>
+								<span class="text">membres</span>
+							</div>
+						</div>
+						<div class="col-auto home-counters">
+							<div class="counters">
+								<i class="yo"></i>
+								<span class="num" data-val="13600">000</span>
+								<span class="text">collections</span>
+							</div>
+						</div>
+						<div class="col-auto home-counters">
+							<div class="counters">
+								<i class="yo"></i>
+								<span class="num" data-val="35900">000</span>
+								<span class="text">collectibles</span>
+							</div>
+						</div>
+						<div class="col-auto home-counters">
+							<div class="counters">
+								<i class="yo"></i>
+								<span class="num" data-val="1600">000</span>
+								<span class="text">commentaires</span>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- XXXXXXXXX -->
+
+
+				<a class="w-50" href="{{ path('app_home') }}"><img class="img-fluid p-3" src="{{asset("asset/images/logo.png")}}"></a>
+				<div class="d-none d-md-flex justify-content-center">
+					<p class="w-50 text-center">
+						My collection est un site de création et de partage de collections.
+																	Créez votre propre collection et partagez là avec beaucoup d'autres collectionneurs
+																	qui ont la même passion que vous.
+					</p>
+				</div>
+			</header>
+
+			<section>
+				<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+					<div class="offcanvas-header">
+						<div class="list-group">
+							<h3 class="offcanvas-title mt-2" id="offcanvasExampleLabel">Votre messagerie</h3>
+							<a href="{{path("app_messagerie_index")}}" class="list-group-item list-group-item-action">Accueil</a>
+							<a href="{{path("app_message_received")}}" class="list-group-item list-group-item-action">Boîte de réception</a>
+							<a href="{{path("app_message_sent")}}" class="list-group-item list-group-item-action">Eléments envoyés</a>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			{% block body %}{% endblock %}
+
+			<!-- footer -->
+			<footer class="container-fluid py-4 text-center mt-5">
+				<ul class="d-flex justify-content-center" style="padding-left: 0;">
+					<a href="{{path("app_home")}}" class="" style="width: fit-content">Accueil |</a>
+					<a href="{{path("app_message_send")}}" class="" style="width: fit-content">Contactez-nous |</a>
+					<a href="" class="" style="width: fit-content">CGU</a>
+				</ul>
+				<span class="text-muted">
+					My collection, la passion avant tout!
+				</span>
+			</footer>
+
+			<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+
+		</div>
+	</body>
+</html>

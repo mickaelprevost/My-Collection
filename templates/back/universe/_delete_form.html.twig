@@ -1,0 +1,5 @@
+<form method="post" action="{{ path('app_back_universe_delete', {'id': universe.id}) }}" onsubmit="return confirm('Êtes-vous sûr de supprimer cet univers ?');">
+	{# Adds a CSRF token for security purposes when submitting the form #}
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ universe.id) }}">
+	<button class="btn btn-danger">Supprimer</button>
+</form>
