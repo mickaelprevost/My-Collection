@@ -12,13 +12,6 @@
 				Ma liste
 			</h2>
 			<div class="d-flex align-items-center justify-content-between">
-				<div class="mb-2">
-					<form action="{{ path('app_favoris_remove_all')}}" method="POST">
-						<button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Vider votre liste de favoris ?');">Vider la liste</button>
-						<input type="hidden" name="token" value="{{ csrf_token('delete_Allfavoris') }}">
-					</form>
-				</div>
-
 				<div class="d-flex mb-2">
 					<a href="{{path("app_user_index", {'id': app.user.id}) }}" class="btn btn-danger btn-sm">
 						Retour profil
@@ -33,7 +26,7 @@
 							<a href="{{ path('app_collectible_show', {'id': collectible.id}) }}">
 								<button type="button" class="profilebtn ">
 									Voir le collectible
-								</button>
+								</button> 
 							</a>
 						</div>
 						<div class="d-flex height-pic-infos mt-2 justify-content-center">
@@ -46,8 +39,6 @@
 								</button>
 								<input type="hidden" name="token" value="{{ csrf_token('delete_favoris') }}">
 							</form>
-
-
 						</div>
 						<div class="">
 							<p class="fw-medium mt-2 fs-6 d-flex justify-content-center text-center">

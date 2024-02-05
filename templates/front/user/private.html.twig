@@ -100,30 +100,34 @@
 <button class="w-25 mt-5 btn-danger btn-primary user-btn flex-row w-auto">
 	Afficher / Masquer la vitrine
 </button></div><div class="gallery d-none">
-<div
-	class="gallery-container">
-	{# loop iterates over the "favorisList" collection, where "key" represents the index and "collectible" represents the current item being looped over #}
-	{% for key, collectible in favorisList %}
+
+
+<div class="gallery-container">
+
+{# loop iterates over the "favorisList" collection, where "key" represents the index and "collectible" represents the current item being looped over #}
+	{% for key, collectible in favorisList %} 
 
 		{# line increments the "key" by 1 for each iteration #}
-		{% set key = key + 1 %}
+	{% set key = key + 1 %} 
 
 		{# Image element for each collectible #}
-		<img class="gallery-item gallery-item-{{ key }}" {% if collectible.picture is not empty %} {# If collectible has a picture, set the image source to upload/pictures/collectible.picture #} src="{{ asset('upload/pictures/' ~ collectible.picture) }}">
-	{% else %}
+<img class="gallery-item gallery-item-{{ key }}" {% if collectible.picture is not empty %} src="{{ asset('upload/pictures/' ~ collectible.picture) }}"> 
+	{% else %} 
 		{# If collectible has no picture, set the image source to asset/images/logo.png #}
-		src="{{ asset('asset/images/logo.png') }}">
-	{% endif %}
+	src="{{ asset('asset/images/logo.png') }}"> 
+	{% endif %} 
 
-{% endfor %}
+ {% endfor %} 
 </div>
+
 <div class="gallery-controls"></div>
-<a class="d-flex justify-content-center edit-profile" href="{{ path('app_favoris_index', {'id': user.id}) }}">
+<a class="d-flex justify-content-center edit-profile" href="{{ path('app_favoris_index', {'id': user.id}) }}"> 
 					<button class="btn-danger btn-primary user-btn w-auto" id="edit-btn">
 						Gérer les favoris&nbsp;
 					</button>
 				</a>
 </div>
+
 
 <div class="my-reviews"><h2 class="userTitle mt-5 mb-5 justify-content-center justify-content-lg-start">
 Mes commentaires</h2><div class="my-review row row-cols-1 row-cols-md-2  d-flex justify-content-lg-between justify-content-center">

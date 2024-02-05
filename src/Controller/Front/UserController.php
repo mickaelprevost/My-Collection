@@ -5,6 +5,7 @@ namespace App\Controller\Front;
 use App\Entity\User;
 use App\Form\UserTypeFront;
 use App\Repository\UserRepository;
+use App\Repository\CollectibleRepository;
 use App\Service\FavoritesManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -24,12 +25,18 @@ class UserController extends AbstractController
      * Private profil page of an user
      * @Route("/{id<\d+>}", name="app_user_index", methods={"GET", "PATCH"})
      */
-    public function index($id, UserRepository $userRepository, FavoritesManager $favoritesManager,
-    Request $request): Response
+    public function index($id, UserRepository $userRepository, CollectibleRepository $collectibleRepository, Request $request): Response
 
     {
-        $user = $userRepository->find($id);
-        $favoritesList = $favoritesManager->list();
+        $user = $this->getuser();
+        $userId = $this->getuser()->getId();
+        $userCollectibles = $collectibleRepository->findBy(['userId' => $userId]);
+        $favoritesList = [];
+        foreach ($userCollectibles as $collectibles) {
+          if ($collectibles->isFavorite() == '1') {
+          $favoritesList[] = $collectibles;
+          }
+        }
 
         if ($request->isMethod('PATCH')) {
 
@@ -98,9 +105,16 @@ class UserController extends AbstractController
      * Display public profile page of a user
      * @Route("/profil/{id<\d+>}", name="app_user_show", methods={"GET"})
      */
-    public function show(User $user, FavoritesManager $favoritesManager): Response
+    public function show($id, User $user, UserRepository $userRepository, CollectibleRepository $collectibleRepository): Response
     {
-        $favoritesList = $favoritesManager->list();
+        $user = $userRepository->find($id);
+        $userCollectibles = $collectibleRepository->findBy(['userId' => $user]);
+        $favoritesList = [];
+        foreach ($userCollectibles as $collectibles) {
+          if ($collectibles->isFavorite() == '1') {
+          $favoritesList[] = $collectibles;
+          }
+        }
         return $this->render('front/user/public.html.twig', [
             'user' => $user,
             'favorisList' => $favoritesList,

@@ -83,6 +83,11 @@ class Collectible
      */
     private $Categories;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $Favorite;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime();
@@ -238,6 +243,18 @@ class Collectible
     public function removeCategory(Category $category): self
     {
         $this->Categories->removeElement($category);
+
+        return $this;
+    }
+
+    public function isFavorite(): ?bool
+    {
+        return $this->Favorite;
+    }
+
+    public function setFavorite(?bool $Favorite): self
+    {
+        $this->Favorite = $Favorite;
 
         return $this;
     }

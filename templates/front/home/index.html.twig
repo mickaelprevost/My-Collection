@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}
+{% block title%}
 	home -
 {% endblock %}
 
@@ -15,7 +15,39 @@
 		}
 	</style>
 	<!-- Wallpaper -->
-
+<!-- Compteurs -->
+				<div class="container">
+					<div class="row justify-content-center">
+						<div class="col-auto home-counters">
+							<div class="counters">
+								<i class="yo"></i>
+								<span class="num" data-val={{users|length}}>000</span>
+								<span class="text">membres</span>
+							</div>
+						</div>
+						<div class="col-auto home-counters">
+							<div class="counters">
+								<i class="yo"></i>
+								<span class="num" data-val={{albums|length}}>000</span>
+								<span class="text">collections</span>
+							</div>
+						</div>
+						<div class="col-auto home-counters">
+							<div class="counters">
+								<i class="yo"></i>
+								<span class="num" data-val={{collectibles|length}}>000</span>
+								<span class="text">collectibles</span>
+							</div>
+						</div>
+						<div class="col-auto home-counters">
+							<div class="counters">
+								<i class="yo"></i>
+								<span class="num" data-val={{reviews|length}}>000</span>
+								<span class="text">commentaires</span>
+							</div>
+						</div>
+					</div> 
+				</div>		
 
 	<div class="navhome flex-wrap">
 	{% include 'front/_navFront.html.twig' %}
@@ -218,4 +250,5 @@
 	</div>
 </section>
 <hr/>
+	
 {% endblock %}

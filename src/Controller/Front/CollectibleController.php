@@ -101,7 +101,7 @@ class CollectibleController extends AbstractController
         return $this->renderForm("front/collectible/new.html.twig", [
             "album" => $album,
             "form" => $form,
-        ]);
+        ]); 
     }
 
     /**
