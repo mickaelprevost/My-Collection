@@ -125,7 +125,10 @@ class AlbumController extends AbstractController
 
             /* In order to remove/change the poster we remove the name 
             from database and we unlink the file from pictures directory*/
-            if ($album->getPoster() !== '') {
+            if ($album->getPoster() == '' or null) {
+                $album->setPoster('');
+                $albumRepository->add($album, true);
+            } else {
                 $image = $album->getPoster();
                 unlink("upload/pictures/" . $image);
                 $album->setPoster('');

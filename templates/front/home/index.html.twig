@@ -41,11 +41,16 @@
 			<div class="col">
 				<div class="hovering w-auto">
 					<img class="img-fluid pic w-auto" 
+						{% if (album.album.poster is not empty) %}
 							{# If the Collection has a picture, set the image source to upload/pictures/album.poster #}
-							src="{{asset('upload/pictures/' ~ album.album.poster)}}"  height="40"></td>
+							src="{{asset('upload/pictures/' ~ album.album.poster)}}"  height="40" alt="{{album.album.title}}" ></td>
+						{% else %}
+							{# If the Collection has no picture, set the image source to asset/images/logo.png #}
+							src="{{asset('asset/images/logo.png')}}" height="40" alt="logo MyCollection"></td>
+						{% endif %}
 						<a href="{{ path('app_album_show', {'id': album.album.id}) }}">
-							<button type="button" class="profilebtn ">Voir la collection</button>
-						</a>					
+							<button type="button" class=" btn profilebtn ">Voir la collection</button>
+						</a>
 				</div>
 
 				<div class="d-flex height-pic-infos mt-2 justify-content-center">
@@ -110,13 +115,13 @@
 		{% for album in lastAlbums %}
 			<div class="col">
 				<div class="hovering w-auto">
-					<img class="img-fluid pic w-auto" 
+					<img class="img-fluid pic w-auto"
 						{% if (album.poster is not empty) %}
 							{# If the Collection has a picture, set the image source to upload/pictures/album.poster #}
-							src="{{asset('upload/pictures/' ~ album.poster)}}"  height="40"></td>
+							src="{{asset('upload/pictures/' ~ album.poster)}}"  height="40" alt="{{album.title}}></td>
 						{% else %}
 							{# If the Collection has no picture, set the image source to asset/images/logo.png #}
-							src="{{asset('asset/images/logo.png')}}" height="40"></td>
+							src="{{asset('asset/images/logo.png')}}" height="40" alt="logo myCollection"></td>
 						{% endif %}
 						<a href="{{ path('app_album_show', {'id': album.id}) }}">
 							<button type="button" class=" btn profilebtn ">Voir la collection</button>
@@ -186,7 +191,7 @@
 				<div class="hovering  w-auto ">
 					{% if (user.picture is not empty) %}
 						{# If the User has a picture, set the image source to upload/pictures/User.picture #}
-						<img class="img-fluid pic w-auto " src="{{asset('upload/usersPics/' ~ user.picture)}}" alt="alternative">
+						<img class="img-fluid pic w-auto " src="{{asset('upload/usersPics/' ~ user.picture)}}" alt="user logo">
 							<a href="{{ path('app_user_show', {'id': user.id}) }}">
 								<button type="button" class="profilebtn ">
 									Voir le profil
@@ -194,7 +199,7 @@
 							</a>
 					{% else %}
 						{# If the User has no picture, set the image source to asset/images/picto.png #}
-						<img class="img-fluid pic w-auto " src="{{ asset('asset/images/picto.png') }}" alt="alternative">
+						<img class="img-fluid pic w-auto " src="{{ asset('asset/images/picto.png') }}" alt="user logo">
 							<a href="{{ path('app_user_show', {'id': user.id}) }}">
 								<button type="button" class="profilebtn ">
 									Voir le profil

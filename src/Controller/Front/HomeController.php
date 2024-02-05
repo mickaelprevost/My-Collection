@@ -8,6 +8,8 @@ use App\Repository\AlbumLikeRepository;
 use App\Repository\UserRepository;
 use App\Repository\AlbumRepository;
 use App\Repository\CategoryRepository;
+use App\Repository\CollectibleRepository;
+use App\Repository\ReviewRepository;
 use App\Repository\UniverseRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,7 +25,8 @@ class HomeController extends AbstractController
      * Default page
      * @Route("/", name="app_home", methods={"GET"})
      */
-    public function index(UniverseRepository $universeRepository, CategoryRepository $categoryRepository, AlbumLikeRepository $albumLikeRepository, AlbumRepository $albumRepository, UserRepository $userRepository, Request $request): Response
+    public function index(UniverseRepository $universeRepository, CategoryRepository $categoryRepository, AlbumLikeRepository $albumLikeRepository, 
+    AlbumRepository $albumRepository, CollectibleRepository $collectibleRepository, ReviewRepository $reviewRepository, UserRepository $userRepository, Request $request): Response
     {
         // call of the function to get the albums list ordered by numbers of likes (DESC)
         $topAlbums = $albumLikeRepository->findAllOrderedByNbersOfLikes();
@@ -33,6 +36,9 @@ class HomeController extends AbstractController
         return $this->render('front/home/index.html.twig', [
             'universes' => $universeRepository->findAll(),
             'categories' => $categoryRepository->findAll(),
+            'albums' => $albumRepository->findAll(),
+            'collectibles' => $collectibleRepository->findAll(),
+            'reviews' => $reviewRepository->findAll(),
             'topAlbums' => $topAlbums,
             'lastAlbums' => $lastAlbums,
             'users' => $userRepository->findAll(),
