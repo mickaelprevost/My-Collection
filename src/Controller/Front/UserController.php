@@ -108,7 +108,11 @@ class UserController extends AbstractController
      */
     public function show($id, User $user, UserRepository $userRepository, CollectibleRepository $collectibleRepository): Response
     {
+        /* recuperation de l'id du user connecté et celui du profile visité pour éviter de pouvoir envoyer une demande 
+        de contact sur son propre profile */
+        $connectedUserId = $this->getUser()->getId();
         $user = $userRepository->find($id);
+
         $userCollectibles = $collectibleRepository->findBy(['userId' => $user]);
         $favoritesList = [];
         foreach ($userCollectibles as $collectibles) {
@@ -117,6 +121,7 @@ class UserController extends AbstractController
           }
         }
         return $this->render('front/user/public.html.twig', [
+            'connectedUser' => $connectedUserId,
             'user' => $user,
             'favorisList' => $favoritesList,
         ]);

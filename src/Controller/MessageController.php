@@ -156,7 +156,8 @@ class MessageController extends AbstractController
     public function invite($id, Request $request, UserRepository $userRepository, EntityManagerInterface $entityManager): Response
     {
         $user = $userRepository->findOneBy(['id' => $id]);
-        if($id >'4'){
+        if ($id > '4'){
+            if ($id != $this->getUser()->getId()){
         $message = new Message();
         $message->setSender($this->getUser());
         $message->setRecipient($user);
@@ -167,6 +168,9 @@ class MessageController extends AbstractController
         $this->addFlash("success", "demande d'ajout aux contacts envoyée à " . $message->getRecipient($user)->getUsername() . ".");
         return $this->redirectToRoute("app_messagerie_index");
         } else {
+            $this->addFlash("danger", "Vous ne pouvez pas vous ajouter vous-même à votre liste de contacts");
+            return $this->redirectToRoute("app_messagerie_index");
+        }} else {
             $this->addFlash("danger", "Désolé une erreur s'est produite");
             return $this->redirectToRoute("app_messagerie_index");
         }
@@ -178,6 +182,7 @@ class MessageController extends AbstractController
     public function validate($id, UserRepository $userRepository, EntityManagerInterface $entityManager): Response
     {
         if ($id > '4'){
+            if ($id != $this->getUser()->getId()){
         $user = $userRepository->findOneBy(['id' => $id]);
         $user->addContact($this->getUser());
         $this->getUser()->addContact($user);
@@ -186,8 +191,11 @@ class MessageController extends AbstractController
         $this->addFlash("success", "Le nouveau contact a bien été ajouté à votre liste.");
         return $this->redirectToRoute("app_messagerie_index");
         } else {
+            $this->addFlash("danger", "Vous ne pouvez pas vous ajouter vous-même à votre liste de contacts");
+            return $this->redirectToRoute("app_messagerie_index");
+        }} else {
             $this->addFlash("danger", "Désolé une erreur s'est produite");
-            return $this->redirectToRoute("app_home");
+            return $this->redirectToRoute("app_messagerie_index");
         }
     }
 }

@@ -19,7 +19,7 @@
 		<b>{{user.username}}</b>
 	</h1> 
 	
-	{% if is_granted('ROLE_USER') %}
+	{% if (is_granted('ROLE_USER') and (user.id) != (connectedUser)) %}
 	<form>
     	<a class="btn btn-primary mt-3 mb-3" href="{{ path('app_contact_new', { id : user.id })}}">envoyer une demande de contact</a>
 	</form>
