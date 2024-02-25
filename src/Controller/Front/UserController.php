@@ -7,6 +7,7 @@ use App\Form\UserTypeFront;
 use App\Repository\UserRepository;
 use App\Repository\CollectibleRepository;
 use App\Service\FavoritesManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
@@ -131,8 +132,13 @@ public function edit(Request $request, User $user, UserRepository $userRepositor
         throw $this->createNotFoundException('Objet non trouvé.');
     }
 
+    if ($user->getId() === $this->getUser()->getId()){
     $form = $this->createForm(UserTypeFront::class, $user);
     $form->handleRequest($request);
+    } else {
+        $this->addFlash("success", "Vous n'êtes pas autorisé à modifier ce profil");
+        return $this->redirectToRoute("app_home");
+    }
 
     if ($form->isSubmitted() && $form->isValid()) {
 
@@ -205,5 +211,37 @@ public function edit(Request $request, User $user, UserRepository $userRepositor
             'users' => $users,
             'keyword' => $keyword,
         ]);
+    }
+
+     /**
+     * Display list of contacts
+     * @Route("/contacts", name="app_contacts_list", methods={"GET"})
+     */
+    public function list(UserRepository $userRepository): Response
+    {
+        $contacts = $this->getUser()->getContact();
+        return $this->render('front/user/contacts.html.twig', [
+            'contacts' => $contacts
+        ]);
+      
+    }
+
+    /**
+     * Delete a contact
+     * @Route("/contact/delete/{id<\d+>}", name="app_contact_delete", methods={"POST"})
+     */
+    public function delete($id, UserRepository $userRepository, EntityManagerInterface $entityManager, Request $request): Response
+    {
+        $contact = $userRepository->findOneBy(['id' => $id]);
+
+        $submittedToken = $request->request->get('contact_token');
+
+        if ($this->isCsrfTokenValid('delete-contact', $submittedToken)) {
+                $this->getUser()->removeContact($contact);
+                $contact->removeContact($this->getUser());
+                $entityManager->flush();
+            }
+
+        return $this->redirectToRoute('app_contacts_list');
     }
 }

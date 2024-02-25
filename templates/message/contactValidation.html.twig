@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Messagerie
+{% endblock %}
+
+{% block body %}
+
+	<style>
+		.choice{
+			margin: auto;
+			width: 100px;
+		}
+
+	</style>
+
+
+	<section class="container d-flex justify-content-center">
+		<div class="row">
+			<div class="col">
+
+			<h1> Acceptez-vous la demande de contact? </h1>
+				<button class="choice" type="submit"> oui </button>
+                <button class="choice" ype="submit"> non </button>
+			</div>
+		</div>
+	</section>
+{% endblock %}

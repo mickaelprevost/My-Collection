@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Liste de contacts
+{% endblock %}
+
+{% block body %}
+
+<h2 style='text-align: center; margin: 2rem; font-weight: bold;'> contacts </h2>
+	{% if contacts|length < '1' %}
+				<p style="text-align: center; text-decoration: underline; font-weight: bold;"> Votre liste de contacts est vide, vous pouvez éffectuer une demande d'ajout à vos contacts sur la page de profile des autres utilisateurs. </p>
+				{% else %}
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mt-4 d-flex">
+				{% for contact in contacts %}
+					<div class="col">
+						<div class="hovering w-auto">
+					        <img class="img-fluid pic w-auto" 
+						{% if (contact.picture is not empty) %}
+							{# If the User has a picture, set the image source to upload/usersPics/user.picture #}
+							src="{{asset('upload/usersPics/' ~ contact.picture)}}" >
+						{% else %}
+							{# If the User has no picture, set the image source to asset/images/picto.png #}
+							src="{{asset('asset/images/picto.png')}}" height="40"></td>
+						{% endif %}
+						<a href="{{ path('app_user_show', {'id': contact.id}) }}">
+							<button type="button" class="profilebtn ">
+								Voir l'utilisateur
+							</button>
+						</a>
+				        </div>
+						<div class="d-flex mt-2  justify-content-center">					
+					<a class="link-dark" href="{{ path('app_user_show', {'id': contact.id}) }}" style='margin-right: 1rem;'>
+						<h5 class="card-title fw-bold mt-2 text-decoration-underline text-center">
+							{{ contact.username}}
+						</h5>
+					</a>
+                    <form action="{{path("app_contact_delete", {id: contact.id})}}" method="POST" class="d-flex">
+						<button type="submit" class="btn btn-secondary">X</button>
+						<input type="hidden" name="contact_token" value="{{ csrf_token('delete-contact') }}">
+					</form>
+				</div>	
+					</div>
+				{% endfor %}
+			</div>
+			{% endif %}
+{% endblock %}

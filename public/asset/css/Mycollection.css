@@ -313,15 +313,15 @@
 
 .my-review {
     border: solid;
+    border-radius: 15px;
     border-width: 0.1rem;
-    padding: 1.3rem;
     border-color: #b1a8a8;
+    box-shadow: 5px 4px 4px black;
 }
 
 .my-review:hover {
     border: solid;
     border-width: 0.1rem;
-    padding: 1.3rem;
     border-color: #000000;
     background-color: #DCDCDC;
 }

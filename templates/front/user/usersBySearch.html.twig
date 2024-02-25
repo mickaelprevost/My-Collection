@@ -10,6 +10,7 @@
 
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mt-4 d-flex">
 		{% for user in users %}
+		{% if user.username is not same as 'admin' %}
 			<div class="col">
 				<div class="hovering w-auto">
 					<img class="img-fluid pic w-auto" 
@@ -35,6 +36,7 @@
 					</a>
 				</div>				
 			</div>
+			{% endif %}
 		{% endfor %}
 
 	</div>

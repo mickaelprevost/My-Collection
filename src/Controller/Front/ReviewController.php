@@ -27,15 +27,19 @@ class ReviewController extends AbstractController
      */
     public function edit(Request $request, Review $review, ReviewRepository $reviewRepository): Response
     {
+        if ($review->getUser()->getId() === $this->getUser()->getId()){
         $form = $this->createForm(ReviewType::class, $review);
         $form->handleRequest($request);
         $userId = $review->getUser()->getId();
+        }else {
+            $this->addFlash('danger', 'Vous n\'êtes pas autorisé à modifier ce commentaire');
+            return $this->redirectToRoute('app_home');
+        }
 
         if ($form->isSubmitted() && $form->isValid()) {
             $reviewRepository->add($review, true);
 
             $this->addFlash('success', 'Commentaire mis à jour avec succès.');
-
             return $this->redirectToRoute('app_user_index', ['id' => $userId], Response::HTTP_SEE_OTHER);
         }
         return $this->renderForm('front/review/edit.html.twig', [
@@ -53,14 +57,19 @@ class ReviewController extends AbstractController
     {
         $userId = $review->getUser()->getId();
 
+        if ($userId === $this->getUser()->getId()){
         if ($this->isCsrfTokenValid('delete' . $review->getId(), $request->request->get('_token'))) {
             $reviewRepository->remove($review, true);
             $entityManager->flush();
         }
-
         $this->addFlash('success', 'Commentaire supprimé avec succès.');
 
         return $this->redirectToRoute('app_user_index', ['id' => $userId], Response::HTTP_SEE_OTHER);
+    }else {
+        $this->addFlash('danger', 'Vous n\'êtes pas autorisé à éffectuer cette action.');
+
+        return $this->redirectToRoute('app_home');
+    }
     }
 
 

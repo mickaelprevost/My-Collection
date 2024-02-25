@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Message;
+use App\Entity\User;
 use App\Form\MessageType;
 use App\Repository\MessageRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,24 +37,27 @@ class MessageController extends AbstractController
      * Display the form to send a message
      * @Route("/message/send", name="app_message_send", methods={"GET", "POST"})
      */
-    public function send(Request $request, EntityManagerInterface $entityManager): Response
+    public function send(Request $request, UserRepository $userRepository, EntityManagerInterface $entityManager): Response
     {
-        $message = new Message();
-        $form = $this->createForm(MessageType::class, $message);
+        $contact = $this->getUser()->getContact();
 
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            // we define that the actual connected user is the sender of the message
+
+
+        if ($request->getMethod() === 'POST'){
+            $message = new Message();
+            foreach($request->request->get('liste') as $liste){
+            $recipient = $userRepository->findOneBy(['username' => $liste]);
+            $message->setRecipient($recipient);
+            }
+            $message->setTitle($request->request->get('titre'));
+            $message->setContent($request->request->get('message'));
             $message->setSender($this->getUser());
             $entityManager->persist($message);
             $entityManager->flush();
-
-            // success message for the user
-            $this->addFlash("message", "message envoyé avec succès.");
-            return $this->redirectToRoute("app_messagerie_index");
         }
+
         return $this->render('message/send.html.twig', [
-            "form" => $form->createView(),
+            'contact' => $contact
         ]);
     }
 
@@ -143,5 +148,46 @@ class MessageController extends AbstractController
         return $this->redirectToRoute('app_message_received', [
             "message" => $message
         ]);
+    }
+
+    /**
+     * @Route("/contact/request/{id<\d+>}", name="app_contact_new", methods={"GET", "POST"})
+     */
+    public function invite($id, Request $request, UserRepository $userRepository, EntityManagerInterface $entityManager): Response
+    {
+        $user = $userRepository->findOneBy(['id' => $id]);
+        if($id >'4'){
+        $message = new Message();
+        $message->setSender($this->getUser());
+        $message->setRecipient($user);
+        $message->setTitle('Un utilisateur souhaite intéragir avec vous');
+        $message->setContent("L'utilisateur " . $message->getSender()->getUsername() . " souhaite vous ajouter à ses contacts, êtes-vous d'accord? <a href='/contact/validate/" . $this->getUser()->getId(). "' class='btn btn-primary'>accepter</a>");
+        $entityManager->persist($message);
+        $entityManager->flush();
+        $this->addFlash("success", "demande d'ajout aux contacts envoyée à " . $message->getRecipient($user)->getUsername() . ".");
+        return $this->redirectToRoute("app_messagerie_index");
+        } else {
+            $this->addFlash("danger", "Désolé une erreur s'est produite");
+            return $this->redirectToRoute("app_messagerie_index");
+        }
+    }
+
+    /**
+     * @Route("/contact/validate/{id<\d+>}", name="app_contact_validate", methods={"GET", "POST"})
+     */
+    public function validate($id, UserRepository $userRepository, EntityManagerInterface $entityManager): Response
+    {
+        if ($id > '4'){
+        $user = $userRepository->findOneBy(['id' => $id]);
+        $user->addContact($this->getUser());
+        $this->getUser()->addContact($user);
+        $entityManager->flush();
+
+        $this->addFlash("success", "Le nouveau contact a bien été ajouté à votre liste.");
+        return $this->redirectToRoute("app_messagerie_index");
+        } else {
+            $this->addFlash("danger", "Désolé une erreur s'est produite");
+            return $this->redirectToRoute("app_home");
+        }
     }
 }

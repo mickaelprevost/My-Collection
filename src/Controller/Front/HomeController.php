@@ -32,7 +32,6 @@ class HomeController extends AbstractController
         $topAlbums = $albumLikeRepository->findAllOrderedByNbersOfLikes();
         // call of the function to get the albums list ordered by creation date (DESC)
         $lastAlbums = $albumRepository->findAllOrderedByCreationDate();
-
         return $this->render('front/home/index.html.twig', [
             'universes' => $universeRepository->findAll(),
             'categories' => $categoryRepository->findAll(),

@@ -2,17 +2,55 @@
 
 {% block title %}Messagerie{% endblock %}
 
+
 {% block body %}
+
+    <style>
+    .select2-selection__rendered {
+        width: 248px;
+    }
+    .select2-container--open .select2-dropdown--below {
+        width: 65px !important;
+    }
+    </style>
+
+
     <section class="container">
         <div class="row">
             <div class="col">
-                <h1> Envoyer un message </h1>
-                {{ form(form)}}
-                <a class="btn btn-primary mt-2" data-bs-toggle="offcanvas" href="#offcanvasExample" 
-                role="button" aria-controls="offcanvasExample">
-                Voir mes dossiers
-                </a>
+                <h1 style="margin-bottom: 1rem; text-align: center;"> Envoyer un message </h1>
             </div>
         </div>
     </section>
+
+    <form method="post" id="formtest">
+            <div class="d-flex justify-content-center" style="margin-bottom: 1rem;">
+                <label for="titre">titre</label>
+                <input style="height: 1.5rem; margin-left: 2.5rem;" type="text" id="titre" name="titre" required/>
+            </div>
+            <div class="d-flex justify-content-center" style="margin-bottom: 1rem;">
+                <label for="message">message</label>
+                <input style ="margin-left: 0.5rem;" type="textarea" id="message" name="message" required/>
+            </div>
+
+            <div class="d-flex justify-content-center" style="margin-bottom: 1rem;">
+            <label style="margin-right: 0.5rem">contacts</label>
+            <select class="liste js-example-basic-single" name="liste[]" required>
+            {% for destinataire in contact %}
+                <option style="width: 700px; value=">{{destinataire.username}}</option>
+            {% endfor %}
+            </select>
+            </div>
+
+        <button class= "d-flex" style="margin: auto;" form="formtest" type="submit" name="valider">Envoyer</button>
+    </form>
+
+        <div>
+        <a class="btn btn-primary mt-2" data-bs-toggle="offcanvas" href="#offcanvasExample" 
+                role="button" aria-controls="offcanvasExample">retour
+        </a>
+        </div>
 {% endblock %}
+
+
+

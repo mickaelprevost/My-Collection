@@ -19,17 +19,24 @@ class FavorisController extends AbstractController
      */
     public function edit(Request $request, Collectible $collectible = null, CollectibleRepository $collectibleRepository, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
-      if ($collectible->isFavorite() == '0') {
+      $object= $collectible->getUserId()->getId();
+      $user = $this->getUser()->getId();
+      if ($object === $user) {
+        if($collectible->isFavorite() !== true) {
         $collectible->setFavorite(true);
         $entityManager->persist($collectible);
         $entityManager->flush();
 
         $this->addFlash('success', 'Favoris ajouté avec succés');
-      } else {
-        $this->addFlash('warning', 'ce collectible fait déjà parti de vos favoris');
-      }
         return $this->redirectToRoute('app_collectible_show', ['id' => $collectible->getId()]);
-        }
+      } else {
+        $this->addFlash('danger', 'Ce collectible fait déjà parti de vos favoris');
+        return $this->redirectToRoute('app_collectible_show', ['id' => $collectible->getId()]);
+      }} else {
+        $this->addFlash('danger', 'Vous ne possédez pas de collectible ayant cette référence');
+        return $this->redirectToRoute('app_home');
+      }
+    }
 
     /**
      * Dsiplay favorites list

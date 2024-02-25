@@ -9,7 +9,6 @@
 	<!-- Wallpaper -->
 	<style>
 		body {
- 
 			background: url("asset/images/fond.png") no-repeat center center fixed;
 			background-size: cover;
 		}
@@ -21,7 +20,7 @@
 						<div class="col-auto home-counters">
 							<div class="counters">
 								<i class="yo"></i>
-								<span class="num" data-val={{users|length}}>000</span>
+								<span class="num" data-val={{users|length - 1}}>000</span>
 								<span class="text">membres</span>
 							</div>
 						</div>
@@ -147,13 +146,13 @@
 		{% for album in lastAlbums %}
 			<div class="col">
 				<div class="hovering w-auto">
-					<img class="img-fluid pic w-auto"
+					<img class="img-fluid pic w-auto" 
 						{% if (album.poster is not empty) %}
 							{# If the Collection has a picture, set the image source to upload/pictures/album.poster #}
-							src="{{asset('upload/pictures/' ~ album.poster)}}"  height="40" alt="{{album.title}}></td>
+							src="{{asset('upload/pictures/' ~ album.poster)}}"  height="40" alt="{{album.title}}" ></td>
 						{% else %}
 							{# If the Collection has no picture, set the image source to asset/images/logo.png #}
-							src="{{asset('asset/images/logo.png')}}" height="40" alt="logo myCollection"></td>
+							src="{{asset('asset/images/logo.png')}}" height="40" alt="logo MyCollection"></td>
 						{% endif %}
 						<a href="{{ path('app_album_show', {'id': album.id}) }}">
 							<button type="button" class=" btn profilebtn ">Voir la collection</button>
@@ -219,6 +218,7 @@
 	<div class="row row-cols-2 row-cols-md-4 row-cols-lg-5 g-4 mt-3 d-flex justify-content-center">
 		{# slice(0, 6) allows you to display a maximum of six collections #}
 		{% for user in users|slice(0, 5) %}
+		{% if (user.username is not same as 'admin') %}
 			<div class="col">
 				<div class="hovering  w-auto ">
 					{% if (user.picture is not empty) %}
@@ -246,6 +246,7 @@
 				</a>
 				
 			</div>
+			{% endif %}
 		{% endfor %}		
 	</div>
 </section>

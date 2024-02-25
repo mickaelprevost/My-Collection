@@ -9,22 +9,22 @@
 			<div class="col-12">
 				<h2 class="mt-4 mb-4">Messagerie</h2>
 				<p>
-					Message de:
-					{{ message.sender.email}}
+					<strong>Message de: </strong>
+					{{ message.sender.username}}
 				</p>
 				<p>
-					Titre:
+					<strong>Titre: </strong>
 					{{message.title}}
 				</p>
 				<div>
-					Contenu:
-					{{ message.content}}
+					<strong>Contenu: </strong>
+					{{ message.content|striptags('<a>')|raw }}
 				</div>
 
-				<a class="btn btn-primary" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
+				<a class="btn btn-primary mt-3" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
 					Voir mes dossiers
 				</a>
-				<a class="btn btn-primary" href="{{ path('app_message_received')}}">
+				<a class="btn btn-primary mt-3" href="{{ path('app_message_received')}}">
 					Retour à la liste des messages
 				</a>
 			</div>

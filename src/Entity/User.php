@@ -104,6 +104,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $albumLikes;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class)
+     */
+    private $contact;
+
 
     public function __construct()
     {
@@ -114,6 +119,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->received = new ArrayCollection();
         $this->likes = new ArrayCollection();
         $this->albumLikes = new ArrayCollection();
+        $this->contact = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -442,6 +448,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $albumLike->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, self>
+     */
+    public function getContact(): Collection
+    {
+        return $this->contact;
+    }
+
+    public function addContact(self $contact): self
+    {
+        if (!$this->contact->contains($contact)) {
+            $this->contact[] = $contact;
+        }
+
+        return $this;
+    }
+
+    public function removeContact(self $contact): self
+    {
+        $this->contact->removeElement($contact);
 
         return $this;
     }

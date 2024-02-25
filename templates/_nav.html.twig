@@ -12,7 +12,7 @@
 
 							<button class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">  <p class="show hide">{{ app.user.username }}</p>
 							{% if (app.user.picture is not empty) %}
-								<td><img class="rounded-circle" src="{{asset('upload/usersPics/' ~ app.user.picture)}}" height="40"></td>
+								<td><img class="rounded-circle" src="{{asset('upload/usersPics/' ~ app.user.picture)}}" alt="logo utilisateur" height="40"></td>
 							{% else %}
 								<td><img class="rounded-circle" src="{{ asset('asset/images/picto.png') }}" height="40"></td>
 							{% endif %}
@@ -35,6 +35,9 @@
 							{% endif %}
 							<li>
 								<a class="dropdown-item" href="{{path("app_messagerie_index")}}">Messagerie ({{ app.user.received|length }})</a>
+							</li>
+								<li>
+								<a class="dropdown-item" href="{{path("app_contacts_list")}}">Contacts</a>
 							</li>
 							<li><hr class="dropdown-divider"></li>
 							<li>

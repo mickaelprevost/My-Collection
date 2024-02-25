@@ -17,8 +17,13 @@
 	</div>
 	<h1 class="big-title">
 		<b>{{user.username}}</b>
-	</h1>
+	</h1> 
 	
+	{% if is_granted('ROLE_USER') %}
+	<form>
+    	<a class="btn btn-primary mt-3 mb-3" href="{{ path('app_contact_new', { id : user.id })}}">envoyer une demande de contact</a>
+	</form>
+	{% endif %}
 
 	<h2 class="userTitle mt-5 mb-5">
 		Bienvenue sur ma bio

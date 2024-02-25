@@ -130,10 +130,11 @@
 
 
 <div class="my-reviews"><h2 class="userTitle mt-5 mb-5 justify-content-center justify-content-lg-start">
-Mes commentaires</h2><div class="my-review row row-cols-1 row-cols-md-2  d-flex justify-content-lg-between justify-content-center">
+Mes commentaires</h2><div class="my-review row row-cols-1 row-cols-md-2 pt-1  d-flex justify-content-lg-between justify-content-center">
 {# -1 col-md-6 col-lg-5 #}
 
 {# This loop allows to display the image of the collection on which we commented, if this one did not have one it would put a predefined image instead #}
+{% if user.reviews is not empty %}
 	{% for review in user.reviews %}
 		<div class="hovering col m-2  justify-content-center"> <img class="img-fluid pic w-auto " {% if (review.album.poster is not empty) %} src="{{asset('upload/pictures/' ~ review.album.poster)}}" height="40"></td>
 {% else %}
@@ -157,7 +158,7 @@ Mes commentaires</h2><div class="my-review row row-cols-1 row-cols-md-2  d-flex 
 	</p>
 </div>
 
-<p class=" d-flex  border border-dark rounded me-5 text-center">{{ review.comment }}</p></div><div class="d-flex d-md-block justify-content-center m-2">
+<p class=" d-flex rounded me-5 text-center">{{ review.comment }}</p></div><div class="d-flex d-md-block justify-content-center m-2">
 <a href="{{ path('app_review_edit', {'id': review.id}) }}">
 	<button id="edit-reviews-btn" class="mb-1">
 		<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="bi bi-pen" viewbox="0 0 16 16">
@@ -171,4 +172,7 @@ Mes commentaires</h2><div class="my-review row row-cols-1 row-cols-md-2  d-flex 
 		</svg>
 	</button>
 	<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ review.id) }}">
-</form></div></div>{% endfor %}</div></div>{% endblock %}
+</form></div></div>{% endfor %}</div>
+{% else %}
+<p> Vous n'avez pas posté de commentaires </p>
+{% endif %}</div>{% endblock %}
