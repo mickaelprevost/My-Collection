@@ -236,10 +236,9 @@ class AlbumController extends AbstractController
         $user = $this->getUser();
 
         // if user is not a connected/registered user, return error message
-        if (!$user) return $this->json([
-            'code' => 403,
-            'message' => "non autorisé"
-        ], 403);
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        } else {
 
         // To avoid many likes by the same user we use a condition that remove the like instead of adding another one
         if ($album->isLikedByUser($user)) {
@@ -271,5 +270,5 @@ class AlbumController extends AbstractController
             'message' => 'Like ajouté',
             'likes' => $albumLikeRepository->count(['album' => $album])
         ], 200);
-    }
+    }}
 }

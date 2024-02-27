@@ -109,6 +109,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $contact;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $friendReady;
+
 
     public function __construct()
     {
@@ -472,6 +477,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeContact(self $contact): self
     {
         $this->contact->removeElement($contact);
+
+        return $this;
+    }
+
+    public function isFriendReady(): ?bool
+    {
+        return $this->friendReady;
+    }
+
+    public function setFriendReady(?bool $friendReady): self
+    {
+        $this->friendReady = $friendReady;
 
         return $this;
     }

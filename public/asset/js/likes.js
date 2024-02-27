@@ -1,6 +1,9 @@
 //We are using axios library to handle ajax requests src="https://unpkg.com/axios/dist/axios.min.js">
 
 function onClickBtnLike(event) {
+    if (this.href == 'http://localhost:8000/login'){
+
+    }else {
     // we prevent form redirecting to url with json info "like added or removed ..."
     event.preventDefault();
 
@@ -29,7 +32,7 @@ function onClickBtnLike(event) {
     } else {
         window.alert("Une erreur s'est produite veuillez réessayer plus tard.")
     }
-    });
+    });}
 }
 document.querySelectorAll('a.js-like').forEach(function(link) {
     link.addEventListener('click', onClickBtnLike);

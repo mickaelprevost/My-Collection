@@ -97,12 +97,22 @@ class MessageController extends AbstractController
      * Display the content of a message
      * @Route("/message/read/{id<\d+>}", name="app_message_read", methods={"GET"})
      */
-    public function read($id, MessageRepository $messageRepository): Response
+    public function read($id, MessageRepository $messageRepository, EntityManagerInterface $entityManager): Response
     {
         $messages = $messageRepository->find($id);
+        if ($messages->getRecipient() == $this->getUser() or $messages->getSender() == $this->getUser()){
         // after checking the message content we set the Isread property at true so it no longer appear in bold style
         $messages->setIsRead(true);
         $messageRepository->add($messages, true);
+
+        if ($messages->getTitle() == 'Un utilisateur souhaite intéragir avec vous' && $messages->isIsRead() == true){
+            $this->getUser()->setFriendReady(true);
+            $messages->getSender()->setFriendReady(true);
+            $entityManager->flush();
+        }}else {
+            $this->addFlash("danger", "Désolé, ce n'est pas possible");
+            return $this->redirectToRoute("app_messagerie_index");
+        }
 
         return $this->render('message/read.html.twig', [
             "message" => $messages
@@ -136,6 +146,10 @@ class MessageController extends AbstractController
             // If the actual user is the recipient we set the active2 property to false. It stay in the database until the sender delete it also.
             if ($message->getRecipient() == $this->getUser()) {
                 $message->setActive2(false);
+                if($message->getTitle() == 'Un utilisateur souhaite intéragir avec vous'){
+                $this->getUser()->setFriendReady(false);
+                $message->getSender()->setFriendReady(false);
+                }
                 $entityManager->persist($message);
                 // When the message is also deleted on the sender side (property active set to false), we can delete the message from the database.
                 if ($message->isActive() === false) {
@@ -162,7 +176,8 @@ class MessageController extends AbstractController
         $message->setSender($this->getUser());
         $message->setRecipient($user);
         $message->setTitle('Un utilisateur souhaite intéragir avec vous');
-        $message->setContent("L'utilisateur " . $message->getSender()->getUsername() . " souhaite vous ajouter à ses contacts, êtes-vous d'accord? <a href='/contact/validate/" . $this->getUser()->getId(). "' class='btn btn-primary'>accepter</a>");
+        $message->setContent("L'utilisateur " . $message->getSender()->getUsername() . " souhaite vous ajouter à ses contacts, êtes-vous d'accord? <a href='/contact/validate/" . $this->getUser()->getId(). "' class='btn btn-primary'>accepter</a> <a href='/contact/reject/" . $this->getUser()->getId(). "' class='btn btn-primary'>refuser</a>");
+        $message->setActive(false);
         $entityManager->persist($message);
         $entityManager->flush();
         $this->addFlash("success", "demande d'ajout aux contacts envoyée à " . $message->getRecipient($user)->getUsername() . ".");
@@ -181,21 +196,40 @@ class MessageController extends AbstractController
      */
     public function validate($id, UserRepository $userRepository, EntityManagerInterface $entityManager): Response
     {
-        if ($id > '4'){
-            if ($id != $this->getUser()->getId()){
         $user = $userRepository->findOneBy(['id' => $id]);
+        if ($id > '4'){
+            if ($this->getUser()->isFriendReady()== true && $user->isFriendReady() == true){
         $user->addContact($this->getUser());
         $this->getUser()->addContact($user);
+        $user->setFriendReady(false);
+        $this->getUser()->setFriendReady(false);
         $entityManager->flush();
 
         $this->addFlash("success", "Le nouveau contact a bien été ajouté à votre liste.");
         return $this->redirectToRoute("app_messagerie_index");
         } else {
-            $this->addFlash("danger", "Vous ne pouvez pas vous ajouter vous-même à votre liste de contacts");
-            return $this->redirectToRoute("app_messagerie_index");
-        }} else {
             $this->addFlash("danger", "Désolé une erreur s'est produite");
             return $this->redirectToRoute("app_messagerie_index");
-        }
+        }} 
+    }
+
+    /**
+     * @Route("/contact/reject/{id<\d+>}", name="app_contact_reject", methods={"GET", "POST"})
+     */
+    public function reject($id, UserRepository $userRepository, EntityManagerInterface $entityManager): Response
+    {
+        $user = $userRepository->findOneBy(['id' => $id]);
+        if ($id > '4'){
+            if ($this->getUser()->isFriendReady()== true && $user->isFriendReady() == true){
+        $user->setFriendReady(false);
+        $this->getUser()->setFriendReady(false);
+        $entityManager->flush();
+
+        $this->addFlash("success", "La demande a bien été rejetée.");
+        return $this->redirectToRoute("app_messagerie_index");
+        } else {
+            $this->addFlash("danger", "Désolé une erreur s'est produite");
+            return $this->redirectToRoute("app_messagerie_index");
+        }} 
     }
 }

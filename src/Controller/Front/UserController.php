@@ -110,7 +110,8 @@ class UserController extends AbstractController
     {
         /* recuperation de l'id du user connecté et celui du profile visité pour éviter de pouvoir envoyer une demande 
         de contact sur son propre profile */
-        $connectedUserId = $this->getUser()->getId();
+
+        $connectedUserId = $this->getUser()?->getId();
         $user = $userRepository->find($id);
 
         $userCollectibles = $collectibleRepository->findBy(['userId' => $user]);
