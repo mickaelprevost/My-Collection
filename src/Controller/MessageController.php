@@ -176,7 +176,7 @@ class MessageController extends AbstractController
         $message->setSender($this->getUser());
         $message->setRecipient($user);
         $message->setTitle('Un utilisateur souhaite intéragir avec vous');
-        $message->setContent("L'utilisateur " . $message->getSender()->getUsername() . " souhaite vous ajouter à ses contacts, êtes-vous d'accord? <a href='/contact/validate/" . $this->getUser()->getId(). "' class='btn btn-primary'>accepter</a> <a href='/contact/reject/" . $this->getUser()->getId(). "' class='btn btn-primary'>refuser</a>");
+        $message->setContent("L'utilisateur " . $message->getSender()->getUsername() . " souhaite vous ajouter à ses contacts, êtes-vous d'accord? <a href='/contact/validate/" . $this->getUser()->getId(). "' class='btn w-15 user-btn'>accepter</a> <a href='/contact/reject/" . $this->getUser()->getId(). "' class='btn w-15 user-btn'>refuser</a>");
         $message->setActive(false);
         $entityManager->persist($message);
         $entityManager->flush();

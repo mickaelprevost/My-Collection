@@ -15,14 +15,15 @@
 	    {% endif %}
 
 	</div>
-	<h1 class="big-title">
+	<h1 class="big-title mb-5">
 		<b>{{user.username}}</b>
 	</h1> 
 	
 	{% if (is_granted('ROLE_USER') and (user.id) != (connectedUser)) %}
 	<form>
-    	<a class="btn btn-primary mt-3 mb-3" href="{{ path('app_contact_new', { id : user.id })}}">envoyer une demande de contact</a>
+    	<a class="w-25 user-btn" href="{{ path('app_contact_new', { id : user.id })}}">envoyer une demande de contact</a>
 	</form>
+
 	{% endif %}
 
 	<h2 class="userTitle mt-5 mb-5">
