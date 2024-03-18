@@ -6,15 +6,13 @@
 
 {% block body %}
 
-	<!-- Wallpaper -->
 	<style>
 		body {
 			background: url("asset/images/fond.png") no-repeat center center fixed;
 			background-size: cover;
 		}
 	</style>
-	<!-- Wallpaper -->
-<!-- Compteurs -->
+
 				<div class="container">
 					<div class="row justify-content-center">
 						<div class="col-auto home-counters">
@@ -54,7 +52,6 @@
 <br>
 <hr>
 
-{# LOOP TO ADD ALBUMS IN THE TOP 3 CLASSIFIED BY RATING #}
 <section>
 	<div class="mt-5 d-flex justify-content-center justify-content-md-start">
 		<h2 class="title fw-bold mb-2 mt-3">Top 3 des collections 
@@ -73,10 +70,10 @@
 				<div class="hovering w-auto">
 					<img class="img-fluid pic w-auto" 
 						{% if (album.album.poster is not empty) %}
-							{# If the Collection has a picture, set the image source to upload/pictures/album.poster #}
+							
 							src="{{asset('upload/pictures/' ~ album.album.poster)}}"  height="40" alt="{{album.album.title}}" ></td>
 						{% else %}
-							{# If the Collection has no picture, set the image source to asset/images/logo.png #}
+							
 							src="{{asset('asset/images/logo.png')}}" height="40" alt="logo MyCollection"></td>
 						{% endif %}
 						<a href="{{ path('app_album_show', {'id': album.album.id}) }}">
@@ -89,10 +86,10 @@
 						<div class="image-container">
 							<img class="img-fluid profilePic mt-0" title="{{ album.album.userId.username}}" alt="image de profile" width="35" 
 								{% if (album.album.userId.picture is not empty) %}
-									{# If the User has a picture, set the image source to upload/usersPics/userId.picture #}
+									
 									src="{{asset('upload/usersPics/' ~ album.album.userId.picture)}}" height="40">
 								{% else %}
-									{# If the User has no picture, set the image source to asset/images/picto.png #}
+									
 									src="{{asset('asset/images/picto.png')}}" height="40"></td>
 								{% endif %}
 						</div>
@@ -105,7 +102,7 @@
 					</a>
 					{% if is_granted('ROLE_USER') %}
 					<a href="{{ path('app_album_like', {'id': album.album.id}) }}" class="btn btn-link js-like text-decoration-none d-flex align-items-center">
-						{# this loop ensures that the like icon is filled when the user liked it and empty when he didn't #}
+						
 						{% else %}
 						<a href="{{path("login")}}" class="btn btn-link js-like text-decoration-none d-flex align-items-center">
 						{% endif %}
@@ -133,7 +130,6 @@
 
 
 <hr/>
-{# lOOP TO ADD ALBUM IN THE LAST 3 ON THE HOME PAGE CLASSIFIED BY THE LATEST CREATED #}
 <section>
 	<div class="mt-5 d-flex  justify-content-center justify-content-md-start">
 		<h2 class="title fw-bold mb-2 mt-3">Les 3 dernières collections 
@@ -151,10 +147,8 @@
 				<div class="hovering w-auto">
 					<img class="img-fluid pic w-auto" 
 						{% if (album.poster is not empty) %}
-							{# If the Collection has a picture, set the image source to upload/pictures/album.poster #}
 							src="{{asset('upload/pictures/' ~ album.poster)}}"  height="40" alt="{{album.title}}" ></td>
 						{% else %}
-							{# If the Collection has no picture, set the image source to asset/images/logo.png #}
 							src="{{asset('asset/images/logo.png')}}" height="40" alt="logo MyCollection"></td>
 						{% endif %}
 						<a href="{{ path('app_album_show', {'id': album.id}) }}">
@@ -167,10 +161,10 @@
 						<div class="image-container">
 							<img class="img-fluid profilePic mt-0" title="{{ album.userId.username}}" alt="image de profile" width="35"
 								{% if (album.userId.picture is not empty) %}
-									{# If the User has a picture, set the image source to upload/pictures/UserId.picture #}
+									
 									src="{{asset('upload/usersPics/' ~ album.userId.picture)}}" height="40">
 								{% else %}
-									{# If the User has no picture, set the image source to asset/images/picto.png #}
+								
 									src="{{asset('asset/images/picto.png')}}" height="40"></td>
 								{% endif %}
 						</div>
@@ -184,7 +178,7 @@
 
 					<a href="{{ path('app_album_like', {'id': album.id}) }}" class="btn btn-link js-like text-decoration-none d-flex align-items-center">
 						{% if app.user and album.isLikedByUser(app.user) %}
-						{# this loop ensures that the like icon is filled when the user liked it and empty when he didn't #}
+					
 						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-hand-thumbs-up-fill" viewBox="0 0 16 16">
   						<path d="M6.956 1.745C7.021.81 7.908.087 8.864.325l.261.066c.463.116.874.456 1.012.965.22.816.533 2.511.062 4.51a9.84 9.84 0 0 1 .443-.051c.713-.065 1.669-.072 2.516.21.518.173.994.681 1.2 1.273.184.532.16 1.162-.234 1.733.058.119.103.242.138.363.077.27.113.567.113.856 0 .289-.036.586-.113.856-.039.135-.09.273-.16.404.169.387.107.819-.003 1.148a3.163 3.163 0 0 1-.488.901c.054.152.076.312.076.465 0 .305-.089.625-.253.912C13.1 15.522 12.437 16 11.5 16H8c-.605 0-1.07-.081-1.466-.218a4.82 4.82 0 0 1-.97-.484l-.048-.03c-.504-.307-.999-.609-2.068-.722C2.682 14.464 2 13.846 2 13V9c0-.85.685-1.432 1.357-1.615.849-.232 1.574-.787 2.132-1.41.56-.627.914-1.28 1.039-1.639.199-.575.356-1.539.428-2.59z"/>
 
@@ -208,7 +202,7 @@
 </section>	
 
 <hr/>
-{# LOOP TO ADD USER PROFILE IN HOME PAGE  #}
+
 <section>
 	<div class="mt-5 d-flex justify-content-center justify-content-md-start">
 		<h2 class="title fw-bold mb-2 mt-3">Communauté 
@@ -219,13 +213,13 @@
 	</div>
 	
 	<div class="row row-cols-2 row-cols-md-4 row-cols-lg-5 g-4 mt-3 d-flex justify-content-center">
-		{# slice(0, 6) allows you to display a maximum of six collections #}
+		
 		{% for user in users|slice(0, 5) %}
 		{% if (user.username is not same as 'admin') %}
 			<div class="col">
 				<div class="hovering  w-auto ">
 					{% if (user.picture is not empty) %}
-						{# If the User has a picture, set the image source to upload/pictures/User.picture #}
+						
 						<img class="img-fluid pic w-auto " src="{{asset('upload/usersPics/' ~ user.picture)}}" alt="user logo">
 							<a href="{{ path('app_user_show', {'id': user.id}) }}">
 								<button type="button" class="profilebtn ">
@@ -233,7 +227,7 @@
 								</button>
 							</a>
 					{% else %}
-						{# If the User has no picture, set the image source to asset/images/picto.png #}
+						
 						<img class="img-fluid pic w-auto " src="{{ asset('asset/images/picto.png') }}" alt="user logo">
 							<a href="{{ path('app_user_show', {'id': user.id}) }}">
 								<button type="button" class="profilebtn ">

@@ -18,7 +18,7 @@
 
 		<div id="searchBar1" class="search-bar" style="display: none;">
 			<form action="{{ path('app_album_list') }}" class="d-flex">
-				<input class="form-control form-control-sm me-2" name="search" type="search" value="{{ keyword is defined ? keyword : '' }}" placeholder="Rechercher un collection">
+				<input class="form-control form-control-sm me-2" name="search" type="search" value="{{ keyword is defined ? keyword : '' }}" placeholder="Rechercher une collection">
 				<button type="submit" class="bi bi-search"></button>
 			</form>
 		</div>
@@ -46,7 +46,6 @@
 			</a>
 			<ul class="dropdown-menu">
 			
-				{# this loop list all the universes #}
 				{% for universe in universes %}
 					<li>
 						<a class="dropdown-item dropdown-color" href="{{ path('app_albums_by_universe', {id: universe.id})}}">
@@ -63,7 +62,6 @@
 			</a>
 			<ul class="dropdown-menu">
 
-				{# this loop list all the categories #}
 				{% for category in categories %}
 					<li>
 						<a class="dropdown-item dropdown-color" href="{{ path('app_collectibles_by_category', {id: category.id})}}">

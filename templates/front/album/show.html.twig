@@ -10,7 +10,6 @@
 		{{album.title}}
 	</h1>
 </div>
-{# CONDITION TO SHOW OR NOT THE ADD COLLECTIBLE BUTTON AND THE MODIFIED ALBUM BUTTON  #}
 	<div class="d-flex justify-content-between">
 		{% if (user.username) is defined and (user.username) == (album.userId.username)%}
 			<a class= "btn btn-warning align-self-start justify-content-md-start" href="{{ path('app_collectible_new', { id : album.id })}}">
@@ -29,7 +28,6 @@
 		
 	</div>
  
- {# LOOP FOR COLLECTIBLES INSIDE AN ALBUM #}
 	<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mt-4 d-flex">
 		{% for collectible in album.collectibles %}
 			<div class="col">
@@ -98,7 +96,6 @@
 		{% endif %}
 	</div>
 
-{# SYSTEM TO SHOW REVIEWS FOR THE ALBUM #}
 	<div class="row g-0 rounded overflow-hidden flex-md-row align-items-start mb-4 position-relative">
 			
 				{% for review in album.reviews %}

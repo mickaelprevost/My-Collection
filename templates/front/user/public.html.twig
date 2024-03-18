@@ -7,10 +7,8 @@
 	<div class="d-flex flex-column justify-content-center align-items-center">
 		<img class="img-fluid profile-pic w-33 "
 		{% if (user.picture is not empty) %}
-			{# If the User has a picture, set the image source to upload/usersPics/user.picture #}
 	        src="{{asset('upload/usersPics/' ~ user.picture)}}">
 	    {% else %}
-			{# If the User has no picture, set the image source to asset/images/picto.png #}
 	        src="{{asset('asset/images/picto.png')}}" height="40">
 	    {% endif %}
 
@@ -43,19 +41,13 @@
     
 		<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 d-flex" >
 
-			{# slice(0, 6) allows you to display a maximum of six collections #}
 			{% for album in user.albums|slice(0, 6) %}
 					<div class="col">
 						<div class="hovering w-auto">
-
-							{# If the Collection has a picture, set the image source to upload/pictures/album.poster #}
 							<img class="img-fluid pic w-auto" {% if (album.poster is not empty) %} src="{{asset('upload/pictures/' ~ album.poster)}}" height="40">
-							
+
 						{% else %}
-
-							{# If the Collection has no picture, set the image source to asset/images/logo.png #}
 							src="{{asset('asset/images/logo.png')}}" height="40">
-
 						{% endif %}
 						<a href="{{ path('app_album_show', {'id': album.id}) }}">
 							<button type="button" class="btn profilebtn">
@@ -85,20 +77,13 @@
 
 	<div class="gallery d-none">
 	    <div class="gallery-container">
-			{# loop iterates over the "favorisList" collection, where "key" represents the index and "collectible" represents the current item being looped over #}
 	        {% for key, collectible in favorisList %}
-
-				{# line increments the "key" by 1 for each iteration #}
 			    {% set key = key + 1 %}
-
-			    	{# Image element for each collectible #}
 			    	<img class="gallery-item gallery-item-{{ key }}"
 
 			    {% if collectible.picture is not empty %}
-			        {# If collectible has a picture, set the image source to upload/pictures/collectible.picture #}
 			        src="{{ asset('upload/pictures/' ~ collectible.picture) }}">
 			    {% else %}
-			        {# If collectible has no picture, set the image source to asset/images/logo.png #}
 			        src="{{ asset('asset/images/logo.png') }}">
 			    {% endif %}
 

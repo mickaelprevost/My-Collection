@@ -15,10 +15,8 @@
 				<div class="hovering w-auto">
 					<img class="img-fluid pic w-auto" 
 						{% if (user.picture is not empty) %}
-							{# If the User has a picture, set the image source to upload/usersPics/user.picture #}
 							src="{{asset('upload/usersPics/' ~ user.picture)}}" >
 						{% else %}
-							{# If the User has no picture, set the image source to asset/images/picto.png #}
 							src="{{asset('asset/images/picto.png')}}" height="40"></td>
 						{% endif %}
 						<a href="{{ path('app_user_show', {'id': user.id}) }}">

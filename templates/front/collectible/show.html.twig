@@ -5,12 +5,9 @@
 
 {% block body %}
 
-	{# ----------------------- Show a collectible  ----------------------- #}
-
 	<div class="collectible-container">
 
 		<section class="collectible-left">
-			{# Show the pic of a collectible or the default pic #}
 			<img class="img"
 			{% if (collectible.picture is not empty) %}
 				src="{{asset('/upload/pictures/' ~ collectible.picture)}}"></td>
@@ -106,8 +103,6 @@
 
 
 	</div>
-
-	{# --------------------------------------------- Show a collectible ---------------------------------------- #}
 	<a class="btn btn-primary mt-3 mb-3" href="{{ path('app_collectible_index') }}">Voir la liste de tous collectibles</a>
 
 
