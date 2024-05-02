@@ -111,6 +111,15 @@ class UserController extends AbstractController
         /* recuperation de l'id du user connecté et celui du profile visité pour éviter de pouvoir envoyer une demande 
         de contact sur son propre profile */
 
+        $userFriends = $this->getUser()?->getContact();
+        $friendsList = [];
+        if ($userFriends !== null) {
+        foreach ($userFriends as $friend) {
+          if ($friend->getId() == $id) {
+          $friendsList = $friend;
+          }
+         }
+        }
         $connectedUserId = $this->getUser()?->getId();
         $user = $userRepository->find($id);
 
@@ -122,6 +131,7 @@ class UserController extends AbstractController
           }
         }
         return $this->render('front/user/public.html.twig', [
+            'friends' => $friendsList,
             'connectedUser' => $connectedUserId,
             'user' => $user,
             'favorisList' => $favoritesList,
