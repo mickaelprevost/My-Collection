@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240205163542 extends AbstractMigration
+final class Version20240505201416 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,12 +20,12 @@ final class Version20240205163542 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE collectible ADD favorite TINYINT(1) DEFAULT NULL');
+        $this->addSql('ALTER TABLE user DROP friend_ready');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE collectible DROP favorite');
+        $this->addSql('ALTER TABLE user ADD friend_ready TINYINT(1) DEFAULT NULL');
     }
 }

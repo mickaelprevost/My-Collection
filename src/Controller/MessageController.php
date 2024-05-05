@@ -104,12 +104,8 @@ class MessageController extends AbstractController
         // after checking the message content we set the Isread property at true so it no longer appear in bold style
         $messages->setIsRead(true);
         $messageRepository->add($messages, true);
-
-        if ($messages->getTitle() == 'Un utilisateur souhaite intéragir avec vous' && $messages->isIsRead() == true){
-            $this->getUser()->setFriendReady(true);
-            $messages->getSender()->setFriendReady(true);
-            $entityManager->flush();
-        }}else {
+        $entityManager->flush();
+        }else {
             $this->addFlash("danger", "Désolé, ce n'est pas possible");
             return $this->redirectToRoute("app_messagerie_index");
         }
@@ -194,42 +190,49 @@ class MessageController extends AbstractController
     /**
      * @Route("/contact/validate/{id<\d+>}", name="app_contact_validate", methods={"GET", "POST"})
      */
-    public function validate($id, UserRepository $userRepository, EntityManagerInterface $entityManager): Response
+    public function validate($id, UserRepository $userRepository, EntityManagerInterface $entityManager, MessageRepository $messageRepository): Response
     {
         $user = $userRepository->findOneBy(['id' => $id]);
-        if ($id > '4'){
-            if ($this->getUser()->isFriendReady()== true && $user->isFriendReady() == true){
-        $user->addContact($this->getUser());
-        $this->getUser()->addContact($user);
-        $user->setFriendReady(false);
-        $this->getUser()->setFriendReady(false);
-        $entityManager->flush();
-
-        $this->addFlash("success", "Le nouveau contact a bien été ajouté à votre liste.");
-        return $this->redirectToRoute("app_messagerie_index");
-        } else {
+        $messages = $messageRepository->findBy(['sender' => $id]);
+        if ($messages != null) {
+        foreach ($messages as $message) {
+            if ($message->getTitle() == 'Un utilisateur souhaite intéragir avec vous' && $message->getSender()->getId() == $id && $message->getRecipient()->getId() == $this->getUser()->getId()) {
+                $user->addContact($this->getUser());
+                $this->getUser()->addContact($user);
+                $entityManager->remove($message);
+                $entityManager->flush();
+        
+                $this->addFlash("success", "Le nouveau contact a bien été ajouté à votre liste.");
+                return $this->redirectToRoute("app_messagerie_index");
+                } else {
+                $this->addFlash("danger", "Désolé une erreur s'est produite");
+                return $this->redirectToRoute("app_messagerie_index");
+                }
+        }}  else {
             $this->addFlash("danger", "Désolé une erreur s'est produite");
             return $this->redirectToRoute("app_messagerie_index");
-        }} 
+        }
     }
 
     /**
      * @Route("/contact/reject/{id<\d+>}", name="app_contact_reject", methods={"GET", "POST"})
      */
-    public function reject($id, UserRepository $userRepository, EntityManagerInterface $entityManager): Response
+    public function reject($id, UserRepository $userRepository, EntityManagerInterface $entityManager, MessageRepository $messageRepository): Response
     {
         $user = $userRepository->findOneBy(['id' => $id]);
-        if ($id > '4'){
-            if ($this->getUser()->isFriendReady()== true && $user->isFriendReady() == true){
-        $user->setFriendReady(false);
-        $this->getUser()->setFriendReady(false);
-        $entityManager->flush();
-
-        $this->addFlash("success", "La demande a bien été rejetée.");
-        return $this->redirectToRoute("app_messagerie_index");
-        } else {
+        $messages = $messageRepository->findBy(['sender' => $id]);
+        if ($messages != null) {
+            foreach ($messages as $message) {
+                if ($message->getTitle() == 'Un utilisateur souhaite intéragir avec vous' && $message->getSender()->getId() == $id && $message->getRecipient()->getId() == $this->getUser()->getId()) {
+                $entityManager->remove($message);
+                $entityManager->flush();
+                }
+                $this->addFlash("success", "La demande a bien été rejetée.");
+                return $this->redirectToRoute("app_messagerie_index");
+            }
+        }else {
             $this->addFlash("danger", "Désolé une erreur s'est produite");
             return $this->redirectToRoute("app_messagerie_index");
-        }} 
+        }           
     }
 }
