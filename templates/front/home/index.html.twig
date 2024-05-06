@@ -175,8 +175,11 @@
 							{{ album.title}}
 						</h5>
 					</a>
-
+					{% if is_granted('ROLE_USER') %}
 					<a href="{{ path('app_album_like', {'id': album.id}) }}" class="btn btn-link js-like text-decoration-none d-flex align-items-center">
+						{% else %}
+						<a href="{{path("login")}}" class="btn btn-link js-like text-decoration-none d-flex align-items-center">
+						{% endif %}
 						{% if app.user and album.isLikedByUser(app.user) %}
 					
 						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-hand-thumbs-up-fill" viewBox="0 0 16 16">
