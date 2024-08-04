@@ -1,5 +1,5 @@
 <div align="center" style="margin-top: 2rem;"> 
-    <img style="background-color:yellow; width:350px; border-radius:15px;" src="My-Collection/public/asset/images/logo.png" alt=""> 
+    <img style="background-color:yellow; width:350px; border-radius:15px;" src="public/asset/images/logo.png" alt=""> 
 </div>
 
 <p align="center"> Bienvenue sur le projet MyCollection, application de partage de collections d'objets sous Symfony6.</p>
@@ -25,7 +25,7 @@
 
 <h3 style="margin-top:2rem;"> Tableau de bord utilisateur</h3>
 <div align="center" style="margin-top: 2rem;"> 
-    <img src="docspreview/privée.png" alt=""> 
+    <img src="docspreview/privé.png" alt=""> 
 </div>
 
 <h3 style="margin-top:2rem;"> Profil utilisateur publique </h3>
