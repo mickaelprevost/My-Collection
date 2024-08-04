@@ -142,10 +142,6 @@ class MessageController extends AbstractController
             // If the actual user is the recipient we set the active2 property to false. It stay in the database until the sender delete it also.
             if ($message->getRecipient() == $this->getUser()) {
                 $message->setActive2(false);
-                if($message->getTitle() == 'Un utilisateur souhaite intéragir avec vous'){
-                $this->getUser()->setFriendReady(false);
-                $message->getSender()->setFriendReady(false);
-                }
                 $entityManager->persist($message);
                 // When the message is also deleted on the sender side (property active set to false), we can delete the message from the database.
                 if ($message->isActive() === false) {
@@ -172,11 +168,11 @@ class MessageController extends AbstractController
         $message->setSender($this->getUser());
         $message->setRecipient($user);
         $message->setTitle('Un utilisateur souhaite intéragir avec vous');
-        $message->setContent("L'utilisateur " . $message->getSender()->getUsername() . " souhaite vous ajouter à ses contacts, êtes-vous d'accord? <a href='/contact/validate/" . $this->getUser()->getId(). "' class='btn w-15 user-btn'>accepter</a> <a href='/contact/reject/" . $this->getUser()->getId(). "' class='btn w-15 user-btn'>refuser</a>");
+        $message->setContent("L'utilisateur " . $message->getSender()->getUserIdentifier() . " souhaite vous ajouter à ses contacts, êtes-vous d'accord? <a href='/contact/validate/" . $this->getUser()->getId(). "' class='btn w-15 user-btn'>accepter</a> <a href='/contact/reject/" . $this->getUser()->getId(). "' class='btn w-15 user-btn'>refuser</a>");
         $message->setActive(false);
         $entityManager->persist($message);
         $entityManager->flush();
-        $this->addFlash("success", "demande d'ajout aux contacts envoyée à " . $message->getRecipient($user)->getUsername() . ".");
+        $this->addFlash("success", "demande d'ajout aux contacts envoyée à " . $message->getRecipient($user)->getUserIdentifier() . ".");
         return $this->redirectToRoute("app_messagerie_index");
         } else {
             $this->addFlash("danger", "Vous ne pouvez pas vous ajouter vous-même à votre liste de contacts");
