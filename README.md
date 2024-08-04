@@ -20,30 +20,30 @@
 
 <h3 style="margin-top:2rem;"> Accueil </h3>
 <div align="center" style="margin-top: 2rem;"> 
-    <img src="My-Collection/docspreview/home.png" alt=""> 
+    <img src="docspreview/home.png" alt=""> 
 </div>
 
 <h3 style="margin-top:2rem;"> Tableau de bord utilisateur</h3>
 <div align="center" style="margin-top: 2rem;"> 
-    <img src="My-Collection/docspreview/privée.png" alt=""> 
+    <img src="docspreview/privée.png" alt=""> 
 </div>
 
 <h3 style="margin-top:2rem;"> Profil utilisateur publique </h3>
 <div align="center" style="margin-top: 2rem;"> 
-    <img src="My-Collection/docspreview/publique.png" alt=""> 
+    <img src="docspreview/publique.png" alt=""> 
 </div>
 
 <h3 style="margin-top:2rem;"> Collection</h3>
 <div align="center" style="margin-top: 2rem;"> 
-    <img src="My-Collection/docspreview/collection.png" alt=""> 
+    <img src="docspreview/collection.png" alt=""> 
 </div>
 
 <h3 style="margin-top:2rem;"> Objet</h3>
 <div align="center" style="margin-top: 2rem;"> 
-    <img src="My-Collection/docspreview/objet.png" alt="">  
+    <img src="docspreview/objet.png" alt="">  
 </div>
 
 <h3 style="margin-top:2rem;"> Messagerie</h3>
 <div align="center" style="margin-top: 2rem;"> 
-    <img src="My-Collection/docspreview/messagerie.png" alt=""> 
+    <img src="docspreview/messagerie.png" alt=""> 
 </div>
