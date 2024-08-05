@@ -20,3 +20,5 @@
 ###< symfony/phpunit-bridge ###
 
 /databaseFiles
+/public/upload/pictures/*
+/public/upload/Pics/*
